@@ -2,6 +2,7 @@
 from MobPadrao import MobPadrao
 from enum import Enum
 from copy import copy
+import MovimentoMob as mm
 class Inimigos:
     class EnumFormations(Enum):
         LINE = 1
@@ -11,12 +12,12 @@ class Inimigos:
     def __init__(self):
         self.INIMIGOS = []
 
-    def criar(self,key, coordinates, dimensions, speed, acceleration, IMG_ASSETS):
-        self.INIMIGOS.append(MobPadrao(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS))
+    def criar(self,key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, mov_strat = mm.Mov_LinearFall() ):
+        self.INIMIGOS.append(MobPadrao(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, mov_strat))
 
     def mover(self, game_screen, dt):
         for i in self.INIMIGOS:
-            i.fall(dt)
+            i.movimentar(dt)
             if i.y + i.height > game_screen.height or i.health < 0:
                 self.INIMIGOS.remove(i)
 
@@ -28,14 +29,15 @@ class Inimigos:
         for i in self.INIMIGOS:
             i.resize(game_screen)
 
-    def criarSwarm(self, type, quant, key, startcoordinates, space, dimension, speed, acceleration, IMG_ASSETS, SCALE_ASSETS):
+    def criarSwarm(self, type, quant, key, startcoordinates, space, dimension, speed, acceleration, IMG_ASSETS, SCALE_ASSETS,  mov_strategy = mm.Mov_LinearFall()):
         img_dim = (IMG_ASSETS[key].get_width(),IMG_ASSETS[key].get_height()) #pega a dimensão do asset
         scale = SCALE_ASSETS[key]
 
         cord = self.__coordenadaTipo(type, quant, space, startcoordinates, dimension, img_dim, scale) 
         
         for c in cord:
-            self.INIMIGOS.append(MobPadrao(key, c, dimension, speed, acceleration, IMG_ASSETS))
+            self.criar(key,c,dimension,speed,acceleration,IMG_ASSETS, mov_strat = mov_strategy )
+           # self.INIMIGOS.append(MobPadrao(key, c, dimension, speed, acceleration, IMG_ASSETS))
 
         pass
 

@@ -1,18 +1,18 @@
 
-from Droplet import Droplet
+from MobPadrao import MobPadrao
 from enum import Enum
 from copy import copy
 class Inimigos:
     class EnumFormations(Enum):
         LINE = 1
         V = 2
-    FORMATIONS = ["line","V"]
+    
 
     def __init__(self):
         self.INIMIGOS = []
 
     def criar(self,key, coordinates, dimensions, speed, acceleration, IMG_ASSETS):
-        self.INIMIGOS.append(Droplet(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS))
+        self.INIMIGOS.append(MobPadrao(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS))
 
     def mover(self, game_screen, dt):
         for i in self.INIMIGOS:
@@ -35,7 +35,7 @@ class Inimigos:
         cord = self.__coordenadaTipo(type, quant, space, startcoordinates, dimension, img_dim, scale) 
         
         for c in cord:
-            self.INIMIGOS.append(Droplet(key, c, dimension, speed, acceleration, IMG_ASSETS))
+            self.INIMIGOS.append(MobPadrao(key, c, dimension, speed, acceleration, IMG_ASSETS))
 
         pass
 

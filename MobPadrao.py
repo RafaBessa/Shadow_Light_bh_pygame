@@ -1,7 +1,7 @@
 import Entity
 
 
-class Droplet(Entity.Entity):
+class MobPadrao(Entity.Entity):
     def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS):
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
         self.health = 1

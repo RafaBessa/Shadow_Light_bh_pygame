@@ -6,8 +6,25 @@ from enum import Enum
 import math
 class Player(Entity):
     _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double()]
+
+
+    class Healthbar(Entity):
+        def __init__(self, dimensions, IMG_ASSETS, max_health):
+            self.max_health = max_health
+            selfh = IMG_ASSETS['healthbar'].get_height()
+            super().__init__("healthbar", [0, dimensions[1]-selfh], dimensions, IMG_ASSETS)
+
+        def hit(self, dmg):
+            self.coordinates[0] -= round(self.width * dmg/self.max_health)
+
+
+
     def __init__(self, key, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed, shotStrategy):
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
+
+        self.health = 10
+        self.healthbar = self.Healthbar(dimensions, IMG_ASSETS, self.health)
+
         self._speed = speed  # in widths per second
         self.speed = speed * self.img.get_width()
 
@@ -19,8 +36,31 @@ class Player(Entity):
         self.shootStrategy = shotStrategy
         self.score = 0
         self.killStreak = 0
+
+
+
+    def draw(self, window):
+        
+        super().draw(window)
+
+        pygame.font.init()
+        font = pygame.font.SysFont("Comic Sans", 70)
+        lost_font_rgb = (231, 88, 152)
+        score_label = font.render("Score "+ str(self.score) , 1, lost_font_rgb)
+        streak_label = font.render("killStreak "+ str(self.killStreak) , 1, lost_font_rgb)
+        
+        window._screen.blit(score_label, ((window.width  - score_label.get_width() - 20) , 5))
+        window._screen.blit(streak_label, ((window.width  - score_label.get_width() - 40 - streak_label.get_width()) , 5))
+
+        self.healthbar.draw(window)
+
+    def hit(self, dmg):
+        self.health -= dmg
+        self.healthbar.hit(dmg)
+        
     def resize(self, window):
         super().resize(window)
+        self.healthbar.resize(window)
         self.speed = self._speed * self.img.get_width()
 
     def walk(self, key, window, dt):
@@ -82,7 +122,6 @@ class Player(Entity):
 
 
 
-
     def scoreUpdate(self, DeathCount, PassingCount):
         self.score += DeathCount
         self.killStreak += DeathCount
@@ -95,8 +134,3 @@ class Player(Entity):
             upgradetype = len(self._ShootType) - 1
         self.shootStrategy = self._ShootType[upgradetype] 
 
-
-    
-    def DrawScore(window):
-
-        window.draw(self.img, self.coordinates)

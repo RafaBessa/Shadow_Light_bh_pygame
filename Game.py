@@ -9,6 +9,9 @@ from Window import Window
 from InimigosController import Inimigos
 import MovimentoMob as mm
 import PlayerShoot as ps
+
+pygame.font.init()
+
 # Default dimensions
 DEFAULT_WINDOW_SIZES = [(1120, 580), (1680, 870)]
 default_width, default_height = DEFAULT_WINDOW_SIZES[0]
@@ -19,10 +22,12 @@ BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
 
 IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
               "roundguy": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "roundguy.png")), 180),
-              "red bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "red bullet.png")), 180)}
+              "red bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "red bullet.png")), 180),
+              "healthbar": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180)}
 SCALE_ASSETS = {"ship1": .2,
                 "roundguy": .2,
-                "red bullet": .2}
+                "red bullet": .2,
+                "healthbar": 3}
 
 
 
@@ -34,6 +39,12 @@ def main():
     FPS: int = 70
     clock = pygame.time.Clock()
     t0 = time()
+
+    lost_font = pygame.font.SysFont("Comic Sans", 70)
+    lost_font_rgb = (231, 88, 152)
+    lost = False
+    lost_time = 0
+
     # Initializing window
     game_screen = Window("Shadow Light", DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS)
 
@@ -66,6 +77,9 @@ def main():
         inimigos.draw(game_screen)
         player_bullets.draw(game_screen)
         enemy_bullets.draw(game_screen)
+        if lost:
+            lost_label = lost_font.render("Game Over", 1, lost_font_rgb)
+            game_screen._screen.blit(lost_label, (game_screen.width / 2 - lost_label.get_width() / 2, game_screen.height / 2))
         pygame.display.update()
 
     run = True
@@ -74,9 +88,14 @@ def main():
         clock.tick(FPS)
         dt = time() - t0
         t0 = time()
-        # TODO: Delete this print after testing:
-        # if collide(player, inimigos.INIMIGOS[0]):
-        #     print('boi is wet')
+
+        if player.health <= 0:
+            lost = True
+            lost_time += dt
+            if lost_time > 2:
+                run = False
+            else:
+                continue
 
         # EVENTS
         for event in pygame.event.get():
@@ -115,8 +134,11 @@ def main():
 
         # Bullets
         enemy_bullets.move(dt, game_screen)
+        enemy_bullets.hit([player])
+
         player_bullets.move(dt, game_screen)
         player_bullets.hit(inimigos.INIMIGOS)
+
 
     pygame.quit()
 

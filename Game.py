@@ -30,10 +30,10 @@ def main():
     t0 = time()
     # Initializing window
     game_screen = Window("Shadow Light", DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS)
-    player = Player("ship1", (500, 460), game_screen.shape, 2, IMG_ASSETS)
+    player = Player("ship1", [500, 460], game_screen.shape, 4, IMG_ASSETS)
     player.draw(game_screen)
 
-    droplet = Droplet("roundguy", (400, 0), game_screen.shape, 1, 7, IMG_ASSETS)
+    droplet = Droplet("roundguy", [400, 0], game_screen.shape, 1, 3, IMG_ASSETS)
     droplet.draw(game_screen)
 
     def redraw():
@@ -48,9 +48,6 @@ def main():
         clock.tick(FPS)
         dt = time() - t0
         t0 = time()
-        # TODO: Delete this print after testing:
-        if collide(player, droplet):
-            print('boi is wet')
 
         # EVENTS
         for event in pygame.event.get():

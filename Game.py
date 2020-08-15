@@ -4,7 +4,7 @@ from time import time
 
 from Bullets import Bullets
 from Player import Player
-from Droplet import Droplet
+from MobPadrao import MobPadrao
 from Window import Window
 from InimigosController import Inimigos
 # Default dimensions

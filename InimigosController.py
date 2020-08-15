@@ -16,10 +16,19 @@ class Inimigos:
         self.INIMIGOS.append(MobPadrao(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, mov_strat))
 
     def mover(self, game_screen, dt):
+        killNumbers = 0
+        PassingNumber = 0
         for i in self.INIMIGOS:
             i.movimentar(dt)
-            if i.y + i.height > game_screen.height or i.health < 0:
+            if i.y + i.height > game_screen.height:
+                #inimigo saiu da tela
+                PassingNumber += 1
                 self.INIMIGOS.remove(i)
+            elif i.health <= 0:
+                #inimigo dead
+                killNumbers += 1
+                self.INIMIGOS.remove(i)
+        return killNumbers, PassingNumber
 
     def draw(self,game_screen):
         for i in self.INIMIGOS:

@@ -2,8 +2,12 @@ from Entity import Entity
 import pygame
 from time import time
 import PlayerShoot as PS
-
+from enum import Enum
+import math
 class Player(Entity):
+    _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double()]
+
+
     class Healthbar(Entity):
         def __init__(self, dimensions, IMG_ASSETS, max_health):
             self.max_health = max_health
@@ -12,6 +16,8 @@ class Player(Entity):
 
         def hit(self, dmg):
             self.coordinates[0] -= round(self.width * dmg/self.max_health)
+
+
 
     def __init__(self, key, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed, shotStrategy):
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
@@ -27,13 +33,30 @@ class Player(Entity):
 
         self.cooldown = .1
         self.timer = self.cooldown + 1
+        self.shootStrategy = shotStrategy
+        self.score = 0
+        self.killStreak = 0
 
-        self._shootStrategy = shotStrategy
+
 
     def draw(self, window):
+        
         super().draw(window)
+
+        pygame.font.init()
+        font = pygame.font.SysFont("Comic Sans", 30)
+        lost_font_rgb = (231, 88, 152)
+        score_label = font.render("Score "+ str(self.score) , 1, lost_font_rgb)
+        streak_label = font.render("killStreak "+ str(self.killStreak) , 1, lost_font_rgb)
+        
+        window._screen.blit(score_label, ((window.width  - score_label.get_width() - 20) , 5))
+        window._screen.blit(streak_label, ((window.width  - score_label.get_width() - 40 - streak_label.get_width()) , 5))
+
         self.healthbar.draw(window)
 
+    def hit(self, dmg):
+        self.health -= dmg
+        self.healthbar.hit(dmg)
 
     def resize(self, window):
         super().resize(window)
@@ -80,37 +103,34 @@ class Player(Entity):
 
     @property
     def shoot_strg(self) -> PS.AbstractShoot:
-        return self._shootStrategy
+        return self.shootStrategy
 
     @shoot_strg.setter
     def shoot_strg(self, atirar: PS.AbstractShoot) -> None:
-        self._shootStrategy = self.shoot_met
+        self.shootStrategy = self.shoot_met
 
     def shoot(self, bullets, IMG_ASSETS, game_screen):
         #self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
         now = time()
         if now - self.timer > self.cooldown:
             
-            self._shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.bullet_type, 
+            self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.bullet_type, 
             self.x, self.y, self.width, self.bullet_speed, self._dimensions)
 
 
             self.timer = time()
 
 
-    def hit(self, dmg):
-        self.health -= dmg
-        self.healthbar.hit(dmg)
+
+    def scoreUpdate(self, DeathCount, PassingCount):
+        self.score += DeathCount
+        self.killStreak += DeathCount
+        _streakValue = 1
+        if(PassingCount > 0):
+            killStreak = 0
         
-    # def shoot(self, bullets, IMG_ASSETS, game_screen):
-    #     now = time()
-    #     if now - self.timer > self.cooldown:
-            
+        upgradetype = math.floor(self.killStreak/_streakValue)
+        if upgradetype >= len(self._ShootType):
+            upgradetype = len(self._ShootType) - 1
+        self.shootStrategy = self._ShootType[upgradetype] 
 
-    #         for i, bullet in enumerate(self.bullet_type):
-    #             bullets.fire(bullet, [self.x + round(self.width / 2), self.y], self._dimensions,
-    #                          IMG_ASSETS, self.bullet_speed[i], game_screen)
-           
-
-
-    #         self.timer = time()

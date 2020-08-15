@@ -20,7 +20,7 @@ IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
               "red bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "red bullet.png")), 180)}
 SCALE_ASSETS = {"ship1": .5,
                 "roundguy": .3,
-                "red bullet": .5}
+                "red bullet": .2}
 
 
 
@@ -46,11 +46,10 @@ def main():
     # Enemies
     inimigos = Inimigos()
     inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
+    inimigos.criar("roundguy", [400, 100], game_screen.shape, 0, 0, IMG_ASSETS)
 
     # Bullets
     bullets = Bullets([], IMG_ASSETS)
-
-    #droplet.draw(game_screen)
 
     def redraw():
         game_screen.blit()
@@ -94,9 +93,10 @@ def main():
         if key[pygame.K_SPACE]:
             player.shoot(bullets,IMG_ASSETS)
         # Enemies
-        inimigos.mover(dt)
+        inimigos.mover(game_screen, dt)
         # Bullets
         bullets.move(dt)
+        bullets.hit(inimigos.INIMIGOS)
 
     pygame.quit()
 

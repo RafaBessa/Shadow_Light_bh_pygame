@@ -4,9 +4,21 @@ from time import time
 
 
 class Player(Entity):
+    class Healthbar(Entity):
+        def __init__(self, dimensions, IMG_ASSETS, max_health):
+            self.max_health = max_health
+            selfh = IMG_ASSETS['healthbar'].get_height()
+            super().__init__("healthbar", [0, dimensions[1]-selfh], dimensions, IMG_ASSETS)
+
+        def hit(self, dmg):
+            self.coordinates[0] -= round(self.width * dmg/self.max_health)
 
     def __init__(self, key, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed):
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
+
+        self.health = 10
+        self.healthbar = self.Healthbar(dimensions, IMG_ASSETS, self.health)
+
         self._speed = speed  # in widths per second
         self.speed = speed * self.img.get_width()
 
@@ -16,8 +28,13 @@ class Player(Entity):
         self.cooldown = .1
         self.timer = self.cooldown + 1
 
+    def draw(self, window):
+        super().draw(window)
+        self.healthbar.draw(window)
+
     def resize(self, window):
         super().resize(window)
+        self.healthbar.resize(window)
         self.speed = self._speed * self.img.get_width()
 
     def walk(self, key, window, dt):
@@ -64,3 +81,7 @@ class Player(Entity):
                 bullets.fire(bullet, [self.x + round(self.width / 2), self.y], self._dimensions,
                              IMG_ASSETS, self.bullet_speed[i], game_screen)
             self.timer = time()
+
+    def hit(self, dmg):
+        self.health -= dmg
+        self.healthbar.hit(dmg)

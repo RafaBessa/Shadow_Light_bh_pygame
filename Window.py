@@ -15,13 +15,13 @@ class Window:
         # Initialize with the first default dimensions
         self._default = 0
         self._fullscreen = False
-        self.borders = [0, 0]
         self.DEFAULT_WINDOW_SIZES = DEFAULT_WINDOW_SIZES
         width, height = self.DEFAULT_WINDOW_SIZES[self._default]
         self.BACKGROUND = BACKGROUND
         self.BG_W, self.BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
         self.SCALE_ASSETS = SCALE_ASSETS
         self.IMG_ASSETS = IMG_ASSETS
+
         # Creating inner screen object
         self._screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
         pygame.display.set_caption(caption)
@@ -50,7 +50,7 @@ class Window:
     def resizeToDefault(self, increment):
         # Switch to the next window size
         self._default += increment
-        self.borders = (0, 0)
+
         # Index overflow
         if self._default == len(self.DEFAULT_WINDOW_SIZES):
             self._default = 0
@@ -62,8 +62,8 @@ class Window:
 
     def resizedAsset(self, key, coordinates, dimensions):
         # Resize with to the same scale as the background
-        xscale = self.SCALE_ASSETS[key] * (self.width - self.borders[0]) / self.BG_W
-        yscale = self.SCALE_ASSETS[key] * (self.height - self.borders[1])/ self.BG_H
+        xscale = self.SCALE_ASSETS[key] * self.width / self.BG_W
+        yscale = self.SCALE_ASSETS[key] * self.height/ self.BG_H
 
         width = round(self.IMG_ASSETS[key].get_width() * xscale)
         height = round(self.IMG_ASSETS[key].get_height() * yscale)

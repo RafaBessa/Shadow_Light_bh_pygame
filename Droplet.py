@@ -18,4 +18,4 @@ class Droplet(Entity.Entity):
 
     def fall(self, dt):
         self.speed += self.acceleration * dt
-        self.coordinates = (self.coordinates[0], round(self.coordinates[1] + self.speed * dt))
+        self.coordinates[1] = round(self.coordinates[1] + self.speed * dt)

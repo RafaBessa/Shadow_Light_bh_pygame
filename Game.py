@@ -145,7 +145,7 @@ def main():
         player_bullets.hit(inimigos.INIMIGOS)
 
         # New game state
-        # inimigos = GM.detect_state(inimigos, (BG_W, BG_H))
+        inimigos = GM.detect_state(inimigos, (BG_W, BG_H))
 
     pygame.quit()
 

@@ -14,10 +14,10 @@ default_width, default_height = DEFAULT_WINDOW_SIZES[0]
 BACKGROUND = pygame.image.load(os.path.join("assets", "background.png"))
 BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
 
-IMG_ASSETS = {"guy": pygame.image.load(os.path.join("assets", "guy.png")),
-              "droplet": pygame.image.load(os.path.join("assets", "droplet.png"))}
-SCALE_ASSETS = {"guy": .5,
-                "droplet": 5}
+IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
+              "roundguy": pygame.image.load(os.path.join("assets", "roundguy.png"))}
+SCALE_ASSETS = {"ship1": .5,
+                "roundguy": 5}
 
 
 def collide(obj1, obj2):
@@ -69,8 +69,6 @@ def main():
             player.resize(game_screen)
         if key[pygame.K_F11]:
             game_screen.toggleFullscreen()
-        if key[pygame.K_e]:
-            FPS = 10
 
         # AFTER CHANGING THE SCREEN
         player.walk(key, game_screen, dt)

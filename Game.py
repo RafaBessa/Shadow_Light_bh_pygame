@@ -18,8 +18,8 @@ BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
 IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
               "roundguy": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "roundguy.png")), 180),
               "red bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "red bullet.png")), 180)}
-SCALE_ASSETS = {"ship1": .5,
-                "roundguy": .3,
+SCALE_ASSETS = {"ship1": .2,
+                "roundguy": .2,
                 "red bullet": .2}
 
 
@@ -29,7 +29,7 @@ def collide(obj1, obj2):
 
 
 def main():
-    FPS: int = 60
+    FPS: int = 70
     clock = pygame.time.Clock()
     t0 = time()
     # Initializing window
@@ -37,8 +37,8 @@ def main():
 
     # Player
     player_fire_key = "red bullet"
-    player_bullet_speed = -8
-    player_speed = 4
+    player_bullet_speed = -10
+    player_speed = 8
     player = Player("ship1", [500, 460], game_screen.shape, player_speed,
                     IMG_ASSETS, player_fire_key, player_bullet_speed)
     player.draw(game_screen)
@@ -52,13 +52,14 @@ def main():
     #inimigos.criar("roundguy", [400, 100], game_screen.shape, 0, 0, IMG_ASSETS)
 
     # Bullets
-    bullets = Bullets([], IMG_ASSETS)
+    player_bullets = Bullets([], IMG_ASSETS)
+    enemy_bullets = Bullets([], IMG_ASSETS)
 
     def redraw():
         game_screen.blit()
         player.draw(game_screen)
         inimigos.draw(game_screen)
-        bullets.draw(game_screen)
+        player_bullets.draw(game_screen)
         pygame.display.update()
 
     run = True
@@ -81,6 +82,7 @@ def main():
                 game_screen.resize(event.w, event.h)
                 player.resize(game_screen)
                 inimigos.resize(game_screen)
+                player_bullets.resize(game_screen)
                 # inimigos.resize(game_screen)
 
         key = pygame.key.get_pressed()
@@ -88,6 +90,8 @@ def main():
         if key[pygame.K_MINUS] or key[pygame.K_EQUALS]:
             game_screen.resizeToDefault(key[pygame.K_EQUALS] - key[pygame.K_MINUS])  # next size
             player.resize(game_screen)
+            inimigos.resize(game_screen)
+            player_bullets.resize(game_screen)
         if key[pygame.K_F11]:
             game_screen.toggleFullscreen()
 
@@ -95,12 +99,14 @@ def main():
         # Player
         player.walk(key, game_screen, dt)
         if key[pygame.K_SPACE]:
-            player.shoot(bullets,IMG_ASSETS)
+            player.shoot(player_bullets, IMG_ASSETS, game_screen)
         # Enemies
         inimigos.mover(game_screen, dt)
+        inimigos.shoot(enemy_bullets, IMG_ASSETS, game_screen)
+
         # Bullets
-        bullets.move(dt)
-        bullets.hit(inimigos.INIMIGOS)
+        player_bullets.move(dt, game_screen)
+        player_bullets.hit(inimigos.INIMIGOS)
 
     pygame.quit()
 

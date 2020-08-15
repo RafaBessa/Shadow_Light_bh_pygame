@@ -24,9 +24,14 @@ class Inimigos:
         for i in self.INIMIGOS:
             i.draw(game_screen)
 
-    def resize(self,game_screen):
+    def resize(self, game_screen):
         for i in self.INIMIGOS:
             i.resize(game_screen)
+
+    def shoot(self, bullets, IMG_ASSETS, game_screen):
+        for i in self.INIMIGOS:
+            i.shoot(bullets, IMG_ASSETS, game_screen)
+
 
     def criarSwarm(self, type, quant, key, startcoordinates, space, dimension, speed, acceleration, IMG_ASSETS, SCALE_ASSETS):
         img_dim = (IMG_ASSETS[key].get_width(),IMG_ASSETS[key].get_height()) #pega a dimensão do asset

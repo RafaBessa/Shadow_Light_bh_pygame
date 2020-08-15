@@ -2,9 +2,9 @@ import os
 import pygame  # ver 1.9.6
 from time import time
 
-import Player
-import Droplet
-import Window
+from Player import Player
+from Droplet import Droplet
+from Window import Window
 
 # Default dimensions
 DEFAULT_WINDOW_SIZES = [(1120, 580), (1680, 870)]
@@ -15,9 +15,9 @@ BACKGROUND = pygame.image.load(os.path.join("assets", "background.png"))
 BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
 
 IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
-              "roundguy": pygame.image.load(os.path.join("assets", "roundguy.png"))}
+              "roundguy": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "roundguy.png")), 180)}
 SCALE_ASSETS = {"ship1": .5,
-                "roundguy": 5}
+                "roundguy": .3}
 
 
 def collide(obj1, obj2):
@@ -29,11 +29,11 @@ def main():
     clock = pygame.time.Clock()
     t0 = time()
     # Initializing window
-    game_screen = Window.Window("Don't Rain On Me", DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS)
-    player = Player.Player("ship1", (500, 460), game_screen.shape, 2, IMG_ASSETS)
+    game_screen = Window("Shadow Light", DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS)
+    player = Player("ship1", (500, 460), game_screen.shape, 2, IMG_ASSETS)
     player.draw(game_screen)
 
-    droplet = Droplet.Droplet("roundguy", (400, 0), game_screen.shape, 1, 7, IMG_ASSETS)
+    droplet = Droplet("roundguy", (400, 0), game_screen.shape, 1, 7, IMG_ASSETS)
     droplet.draw(game_screen)
 
     def redraw():
@@ -61,6 +61,7 @@ def main():
             elif event.type == pygame.VIDEORESIZE and not game_screen._fullscreen:
                 game_screen.resize(event.w, event.h)
                 player.resize(game_screen)
+                droplet.resize(game_screen)
 
         key = pygame.key.get_pressed()
         # CHANGING BETWEEN DEFAULT SIZES

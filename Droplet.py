@@ -10,11 +10,13 @@ class Droplet(Entity.Entity):
 
         self._acceleration = acceleration  # in heights per second squared
         self.acceleration = acceleration * self.img.get_height()
+        print(self.coordinates)
 
     def resize(self, window):
         super().resize(window)
         self.speed = self._speed * self.img.get_height()
         self.acceleration = self._acceleration * self.img.get_height()
+        print(self.coordinates)
 
     def fall(self, dt):
         self.speed += self.acceleration * dt

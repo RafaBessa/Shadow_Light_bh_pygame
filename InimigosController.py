@@ -1,18 +1,17 @@
-
 from MobPadrao import MobPadrao
 from enum import Enum
 from copy import copy
 import MovimentoMob as mm
+
 class Inimigos:
     class EnumFormations(Enum):
         LINE = 1
         V = 2
-    
 
     def __init__(self):
         self.INIMIGOS = []
 
-    def criar(self,key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, mov_strat = mm.Mov_LinearFall() ):
+    def criar(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, mov_strat=mm.Mov_LinearFall()):
         self.INIMIGOS.append(MobPadrao(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, mov_strat))
 
     def mover(self, game_screen, dt):
@@ -21,16 +20,16 @@ class Inimigos:
         for i in self.INIMIGOS:
             i.movimentar(dt)
             if i.y + i.height > game_screen.height:
-                #inimigo saiu da tela
+                # inimigo saiu da tela
                 PassingNumber += 1
                 self.INIMIGOS.remove(i)
             elif i.health <= 0:
-                #inimigo dead
+                # inimigo dead
                 killNumbers += 1
                 self.INIMIGOS.remove(i)
         return killNumbers, PassingNumber
 
-    def draw(self,game_screen):
+    def draw(self, game_screen):
         for i in self.INIMIGOS:
             i.draw(game_screen)
 
@@ -42,58 +41,53 @@ class Inimigos:
         for i in self.INIMIGOS:
             i.shoot(bullets, IMG_ASSETS, game_screen)
 
+    def criarSwarm(self, type, quant, key, startcoordinates, space, dimension, speed, acceleration, IMG_ASSETS,
+                   SCALE_ASSETS, mov_strategy=mm.Mov_LinearFall()):
 
-    def criarSwarm(self, type, quant, key, startcoordinates, space, dimension, speed, acceleration, IMG_ASSETS, SCALE_ASSETS,  mov_strategy = mm.Mov_LinearFall()):
-
-        img_dim = (IMG_ASSETS[key].get_width(),IMG_ASSETS[key].get_height()) #pega a dimensão do asset
+        img_dim = (IMG_ASSETS[key].get_width(), IMG_ASSETS[key].get_height())  # pega a dimensão do asset
         scale = SCALE_ASSETS[key]
 
-        cord = self.__coordenadaTipo(type, quant, space, startcoordinates, dimension, img_dim, scale) 
-        
+        cord = self.__coordenadaTipo(type, quant, space, startcoordinates, dimension, img_dim, scale)
+
         for c in cord:
-            self.criar(key,c,dimension,speed,acceleration,IMG_ASSETS, mov_strat = mov_strategy )
-           # self.INIMIGOS.append(MobPadrao(key, c, dimension, speed, acceleration, IMG_ASSETS))
+            self.criar(key, c, dimension, speed, acceleration, IMG_ASSETS, mov_strat=mov_strategy)
+        # self.INIMIGOS.append(MobPadrao(key, c, dimension, speed, acceleration, IMG_ASSETS))
 
         pass
 
-    #tenta gerar coordenadas para os inimigos, com base nos parametros
+    # tenta gerar coordenadas para os inimigos, com base nos parametros
     def __coordenadaTipo(self, type, quant, space, startcoordinates, screen_dim, img_dim, scale):
         cord = []
         scaleDim = (img_dim[0] * scale, img_dim[1] * scale)
         if type == self.EnumFormations.LINE:
             x, y = startcoordinates
-            for i in range(0,quant):
-                cord.append([x,y])
-                x+=space + scaleDim[0]
+            for i in range(0, quant):
+                cord.append([x, y])
+                x += space + scaleDim[0]
                 if (x + scaleDim[0]) >= screen_dim[0]:
                     break
-        
+
         if type == self.EnumFormations.V:
             x, y = startcoordinates
             xe = copy(x)
             xd = copy(x)
-            if (quant%2) == 1:
-                quant-=1
+            if (quant % 2) == 1:
+                quant -= 1
                 if (x + scaleDim[0]) <= screen_dim[0]:
-                    cord.append([x,y])
+                    cord.append([x, y])
                     y -= space
 
-            for i in range(0,quant,2):
+            for i in range(0, quant, 2):
                 if (xd + scaleDim[0]) <= screen_dim[0]:
-                    xd +=  scaleDim[0]
-                    cord.append([xd,y])
+                    xd += scaleDim[0]
+                    cord.append([xd, y])
                     xd += space
-                   
-            
+
                 if (xe - scaleDim[0]) >= 0:
                     xe -= scaleDim[0]
-                    cord.append([xe,y])
+                    cord.append([xe, y])
                     xe -= space
-                    
-                
+
                 y -= space
 
         return cord
-
-    
-        

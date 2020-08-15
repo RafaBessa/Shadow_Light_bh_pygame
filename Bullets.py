@@ -1,4 +1,3 @@
-import pygame
 from Entity import Entity
 
 
@@ -24,7 +23,7 @@ class Bullets:
             i.draw(window)
 
     def hit(self, objs):
-      
+
         for bullet in self.bullets:
             for obj in objs:
                 if collide(bullet, obj):

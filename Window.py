@@ -1,17 +1,20 @@
 import pygame
 
+
 class Window:
     @property
     def width(self):
         return self._screen.get_width()
+
     @property
     def height(self):
         return self._screen.get_height()
+
     @property
     def shape(self):
         return self._screen.get_width(), self._screen.get_height()
 
-    def __init__(self, caption, DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS ):
+    def __init__(self, caption, DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS):
         # Initialize with the first default dimensions
         self._default = 0
         self._fullscreen = False
@@ -63,7 +66,7 @@ class Window:
     def resizedAsset(self, key, coordinates, dimensions):
         # Resize with to the same scale as the background
         xscale = self.SCALE_ASSETS[key] * self.width / self.BG_W
-        yscale = self.SCALE_ASSETS[key] * self.height/ self.BG_H
+        yscale = self.SCALE_ASSETS[key] * self.height / self.BG_H
 
         width = round(self.IMG_ASSETS[key].get_width() * xscale)
         height = round(self.IMG_ASSETS[key].get_height() * yscale)

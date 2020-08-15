@@ -1,5 +1,6 @@
 import pygame
 
+
 class Entity:
     def __init__(self, key, coordinates, dimensions, IMG_ASSETS):
         self.coordinates = coordinates
@@ -27,9 +28,11 @@ class Entity:
     @property
     def mask(self):
         return pygame.mask.from_surface(self.img)
+
     @property
     def x(self):
         return self.coordinates[0]
+
     @property
     def y(self):
         return self.coordinates[1]

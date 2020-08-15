@@ -32,4 +32,3 @@ class Mov_ZigZag(AbstractMoviment):
             self.direct = not self.direct
 
         return coordinates, speed, acceleration
-        

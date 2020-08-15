@@ -9,6 +9,8 @@ from Window import Window
 from InimigosController import Inimigos
 import MovimentoMob as mm
 import PlayerShoot as ps
+import GameMaster as gm
+
 
 pygame.font.init()
 
@@ -23,17 +25,16 @@ BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
 IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
               "roundguy": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "roundguy.png")), 180),
               "red bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "red bullet.png")), 180),
-              "healthbar": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180)}
+              "healthbar": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180),
+              "dark bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180),
+              "light bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180)}
+
 SCALE_ASSETS = {"ship1": .2,
                 "roundguy": .2,
                 "red bullet": .2,
-                "healthbar": 3}
-
-
-
-def collide(obj1, obj2):
-    return obj1.mask.overlap(obj2.mask, (obj2.x - obj1.x, obj2.y - obj1.y)) is not None
-
+                "healthbar": 3,
+                "dark bullet": .2,
+                "rlight bullet": .2}
 
 def main():
     FPS: int = 70
@@ -58,14 +59,14 @@ def main():
 
     # Enemies
     inimigos = Inimigos()
-    #inimigos.criar("roundguy", (400, 0), game_screen.shape, 0.5, 1, IMG_ASSETS)
+    # inimigos.criar("roundguy", (400, 0), game_screen.shape, 0.5, 1, IMG_ASSETS)
     inimigos.criarSwarm(
-        inimigos.EnumFormations.V, 3, "roundguy", [250,0], 20, game_screen.shape,
-         2, 0.1, IMG_ASSETS, SCALE_ASSETS, mov_strategy=mm.Mov_ZigZag()
-         )
-    #inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
-   # inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
-    #inimigos.criar("roundguy", [400, 100], game_screen.shape, 0, 0, IMG_ASSETS)
+        inimigos.EnumFormations.V, 3, "roundguy", [250, 0], 20, game_screen.shape,
+        2, 0.1, IMG_ASSETS, SCALE_ASSETS, mov_strategy=mm.Mov_ZigZag()
+    )
+    # inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
+    # inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
+    # inimigos.criar("roundguy", [400, 100], game_screen.shape, 0, 0, IMG_ASSETS)
 
     # Bullets
     player_bullets = Bullets([], IMG_ASSETS)
@@ -79,7 +80,8 @@ def main():
         enemy_bullets.draw(game_screen)
         if lost:
             lost_label = lost_font.render("Game Over", 1, lost_font_rgb)
-            game_screen._screen.blit(lost_label, (game_screen.width / 2 - lost_label.get_width() / 2, game_screen.height / 2))
+            game_screen._screen.blit(lost_label,
+                                     (game_screen.width / 2 - lost_label.get_width() / 2, game_screen.height / 2))
         pygame.display.update()
 
     run = True
@@ -109,7 +111,6 @@ def main():
                 inimigos.resize(game_screen)
                 player_bullets.resize(game_screen)
                 enemy_bullets.resize(game_screen)
-                # inimigos.resize(game_screen)
 
         key = pygame.key.get_pressed()
         # CHANGING BETWEEN DEFAULT SIZES
@@ -127,6 +128,7 @@ def main():
         player.walk(key, game_screen, dt)
         if key[pygame.K_SPACE]:
             player.shoot(player_bullets, IMG_ASSETS, game_screen)
+
         # Enemies
         DeathCount, PassingCount = inimigos.mover(game_screen, dt)
         player.scoreUpdate(DeathCount, PassingCount)
@@ -138,7 +140,6 @@ def main():
 
         player_bullets.move(dt, game_screen)
         player_bullets.hit(inimigos.INIMIGOS)
-
 
     pygame.quit()
 

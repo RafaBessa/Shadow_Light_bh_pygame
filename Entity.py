@@ -28,3 +28,12 @@ class Entity:
     def height(self):
         return self.img.get_height()
 
+    @property
+    def mask(self):
+        return pygame.mask.from_surface(self.img)
+    @property
+    def x(self):
+        return self.coordinates[0]
+    @property
+    def y(self):
+        return self.coordinates[1]

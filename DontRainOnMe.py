@@ -5,12 +5,7 @@ from time import time
 import Player
 import Droplet
 import Window
-# DISCLAIMER: GLaDOS art made by Nannerman, available at https://www.pixilart.com/
 
-# Last updated: 08/08/2020 (day/month/year)
-
-# This is meant as a simple demonstration of how to resize the window using pygame, but it is not how
-# it should be generally implemented for games
 
 # Default dimensions
 DEFAULT_WINDOW_SIZES = [(1120, 580), (1680, 870)]
@@ -20,11 +15,15 @@ default_width, default_height = DEFAULT_WINDOW_SIZES[0]
 BACKGROUND = pygame.image.load(os.path.join("assets", "background.png"))
 BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
 
-SCALE_ASSETS = {"guy": .5,
-                "droplet": 5}
 IMG_ASSETS = {"guy": pygame.image.load(os.path.join("assets", "guy.png")),
               "droplet": pygame.image.load(os.path.join("assets", "droplet.png"))}
+SCALE_ASSETS = {"guy": .5,
+                "droplet": 5}
 
+
+
+def collide(obj1, obj2):
+    return obj1.mask.overlap(obj2.mask, (obj2.x - obj1.x, obj2.y - obj1.y)) is not None
 
 def main():
     FPS: int = 60
@@ -50,6 +49,9 @@ def main():
         clock.tick(FPS)
         dt = time() - t0
         t0 = time()
+        # TODO: Delete this print after testing:
+        if collide(player, droplet):
+            print('boi is wet')
 
         # EVENTS
         for event in pygame.event.get():

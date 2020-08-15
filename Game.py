@@ -48,8 +48,8 @@ def main():
     #inimigos.criar("roundguy", (400, 0), game_screen.shape, 0.5, 1, IMG_ASSETS)
     inimigos.criarSwarm(inimigos.EnumFormations.V , 8, "roundguy", [250,0], 20, game_screen.shape, 0.5, 1, IMG_ASSETS, SCALE_ASSETS)
     #inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
-    inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
-    inimigos.criar("roundguy", [400, 100], game_screen.shape, 0, 0, IMG_ASSETS)
+   # inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
+    #inimigos.criar("roundguy", [400, 100], game_screen.shape, 0, 0, IMG_ASSETS)
 
     # Bullets
     bullets = Bullets([], IMG_ASSETS)

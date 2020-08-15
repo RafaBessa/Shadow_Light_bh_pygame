@@ -44,7 +44,7 @@ class Player(Entity):
         super().draw(window)
 
         pygame.font.init()
-        font = pygame.font.SysFont("Comic Sans", 70)
+        font = pygame.font.SysFont("Comic Sans", 30)
         lost_font_rgb = (231, 88, 152)
         score_label = font.render("Score "+ str(self.score) , 1, lost_font_rgb)
         streak_label = font.render("killStreak "+ str(self.killStreak) , 1, lost_font_rgb)
@@ -57,7 +57,7 @@ class Player(Entity):
     def hit(self, dmg):
         self.health -= dmg
         self.healthbar.hit(dmg)
-        
+
     def resize(self, window):
         super().resize(window)
         self.healthbar.resize(window)

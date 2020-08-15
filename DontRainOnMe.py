@@ -6,7 +6,6 @@ import Player
 import Droplet
 import Window
 
-
 # Default dimensions
 DEFAULT_WINDOW_SIZES = [(1120, 580), (1680, 870)]
 default_width, default_height = DEFAULT_WINDOW_SIZES[0]
@@ -21,9 +20,9 @@ SCALE_ASSETS = {"guy": .5,
                 "droplet": 5}
 
 
-
 def collide(obj1, obj2):
     return obj1.mask.overlap(obj2.mask, (obj2.x - obj1.x, obj2.y - obj1.y)) is not None
+
 
 def main():
     FPS: int = 60

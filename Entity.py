@@ -1,8 +1,4 @@
-
 import pygame
-import os
-
-
 
 class Entity:
     def __init__(self, key, coordinates, dimensions, IMG_ASSETS):

@@ -49,8 +49,8 @@ class MobPadrao(Entity.Entity):
         bullet = 'red bullet'
         now = time()
         r = random()
-        print(r)
         if now - self.timer > self.cooldown and random() > .5:
+            print('FIRE FIRE')
             bullets.fire(bullet, [self.x + round(self.width / 2), self.y], self._dimensions,
                              IMG_ASSETS, bullet_speed, game_screen)
             self.timer = time()

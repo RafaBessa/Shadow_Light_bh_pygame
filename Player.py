@@ -3,10 +3,13 @@ import pygame
 
 class Player(Entity.Entity):
 
-    def __init__(self, key, coordinates, dimensions, speed,IMG_ASSETS):
+    def __init__(self, key, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed):
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
         self._speed = speed  # in widths per second
         self.speed = speed*self.img.get_width()
+
+        self.bullet_type = [bullet_key]
+        self.bullet_speed = [bullet_speed]
 
     def resize(self, window):
         super().resize(window)
@@ -48,3 +51,7 @@ class Player(Entity.Entity):
             else:
                 # Hugging upper border
                 self.coordinates[1] = 0
+
+    def shoot(self, bullets, IMG_ASSETS):
+        for i, bullet in enumerate(self.bullet_type):
+            bullets.fire(self.bullet_type[i], [self.x + round(self.width/2), self.y], self._dimensions, IMG_ASSETS, self.bullet_speed[i])

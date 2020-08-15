@@ -1,6 +1,8 @@
 import os
 import pygame  # ver 1.9.6
 from time import time
+
+from Bullets import Bullets
 from Player import Player
 from Droplet import Droplet
 from Window import Window
@@ -14,9 +16,11 @@ BACKGROUND = pygame.image.load(os.path.join("assets", "background.png"))
 BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
 
 IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
-              "roundguy": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "roundguy.png")), 180)}
+              "roundguy": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "roundguy.png")), 180),
+              "red bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "red bullet.png")), 180)}
 SCALE_ASSETS = {"ship1": .5,
-                "roundguy": .3}
+                "roundguy": .3,
+                "red bullet": .5}
 
 
 
@@ -30,17 +34,29 @@ def main():
     t0 = time()
     # Initializing window
     game_screen = Window("Shadow Light", DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS)
-    player = Player("ship1", [500, 460], game_screen.shape, 4, IMG_ASSETS)
+
+    # Player
+    player_fire_key = "red bullet"
+    player_bullet_speed = -8
+    player_speed = 4
+    player = Player("ship1", [500, 460], game_screen.shape, player_speed,
+                    IMG_ASSETS, player_fire_key, player_bullet_speed)
     player.draw(game_screen)
+
+    # Enemies
     inimigos = Inimigos()
-    inimigos.criar("roundguy", (400, 0), game_screen.shape, 0.5, 1, IMG_ASSETS)
-    
+    inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
+
+    # Bullets
+    bullets = Bullets([], IMG_ASSETS)
+
     #droplet.draw(game_screen)
 
     def redraw():
         game_screen.blit()
         player.draw(game_screen)
         inimigos.draw(game_screen)
+        bullets.draw(game_screen)
         pygame.display.update()
 
     run = True
@@ -50,8 +66,8 @@ def main():
         dt = time() - t0
         t0 = time()
         # TODO: Delete this print after testing:
-        if collide(player, inimigos.INIMIGOS[0]):
-            print('boi is wet')
+        #if collide(player, inimigos.INIMIGOS[0]):
+        #    print('ouch')
 
         # EVENTS
         for event in pygame.event.get():
@@ -62,7 +78,7 @@ def main():
             elif event.type == pygame.VIDEORESIZE and not game_screen._fullscreen:
                 game_screen.resize(event.w, event.h)
                 player.resize(game_screen)
-                droplet.resize(game_screen)
+                # inimigos.resize(game_screen)
 
         key = pygame.key.get_pressed()
         # CHANGING BETWEEN DEFAULT SIZES
@@ -73,8 +89,14 @@ def main():
             game_screen.toggleFullscreen()
 
         # AFTER CHANGING THE SCREEN
+        # Player
         player.walk(key, game_screen, dt)
+        if key[pygame.K_SPACE]:
+            player.shoot(bullets,IMG_ASSETS)
+        # Enemies
         inimigos.mover(dt)
+        # Bullets
+        bullets.move(dt)
 
     pygame.quit()
 

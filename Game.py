@@ -42,7 +42,7 @@ def main():
     player_bullet_speed = -10
     player_speed = 8
     player = Player("ship1", [500, 460], game_screen.shape, player_speed,
-                    IMG_ASSETS, player_fire_key, player_bullet_speed, ps.Shoot_Double())
+                    IMG_ASSETS, player_fire_key, player_bullet_speed, ps.Shoot_Basic())
     player.draw(game_screen)
 
     # Enemies
@@ -109,7 +109,8 @@ def main():
         if key[pygame.K_SPACE]:
             player.shoot(player_bullets, IMG_ASSETS, game_screen)
         # Enemies
-        inimigos.mover(game_screen, dt)
+        DeathCount, PassingCount = inimigos.mover(game_screen, dt)
+        player.scoreUpdate(DeathCount, PassingCount)
         inimigos.shoot(enemy_bullets, IMG_ASSETS, game_screen)
 
         # Bullets

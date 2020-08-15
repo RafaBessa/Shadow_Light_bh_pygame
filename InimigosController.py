@@ -58,7 +58,7 @@ class Inimigos:
     # tenta gerar coordenadas para os inimigos, com base nos parametros
     def __coordenadaTipo(self, type, quant, space, startcoordinates, screen_dim, img_dim, scale):
         cord = []
-        scaleDim = (img_dim[0] * scale, img_dim[1] * scale)
+        scaleDim = (round(img_dim[0] * scale), round(img_dim[1] * scale))
         if type == self.EnumFormations.LINE:
             x, y = startcoordinates
             for i in range(0, quant):

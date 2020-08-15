@@ -33,8 +33,8 @@ def main():
     player = Player("ship1", [500, 460], game_screen.shape, 4, IMG_ASSETS)
     player.draw(game_screen)
     inimigos = Inimigos()
-    inimigos.criar("roundguy", (400, 0), game_screen.shape, 0.5, 1, IMG_ASSETS)
-    
+    #inimigos.criar("roundguy", (400, 0), game_screen.shape, 0.5, 1, IMG_ASSETS)
+    inimigos.criarSwarm(inimigos.EnumFormations.V , 8, "roundguy", (250,0), 20, game_screen.shape, 0.5, 1, IMG_ASSETS, SCALE_ASSETS)
     #droplet.draw(game_screen)
 
     def redraw():
@@ -50,8 +50,8 @@ def main():
         dt = time() - t0
         t0 = time()
         # TODO: Delete this print after testing:
-        if collide(player, inimigos.INIMIGOS[0]):
-            print('boi is wet')
+        # if collide(player, inimigos.INIMIGOS[0]):
+        #     print('boi is wet')
 
         # EVENTS
         for event in pygame.event.get():
@@ -62,7 +62,7 @@ def main():
             elif event.type == pygame.VIDEORESIZE and not game_screen._fullscreen:
                 game_screen.resize(event.w, event.h)
                 player.resize(game_screen)
-                droplet.resize(game_screen)
+                inimigos.resize(game_screen)
 
         key = pygame.key.get_pressed()
         # CHANGING BETWEEN DEFAULT SIZES

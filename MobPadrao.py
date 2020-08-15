@@ -21,7 +21,7 @@ class MobPadrao(Entity.Entity):
         self._movStrategy = movStategy
         self._startcoordinate = coordinates
 
-        self.cooldown = .1
+        self.cooldown = .5
         self.timer = self.cooldown + 1
 
     def resize(self, window):
@@ -44,12 +44,11 @@ class MobPadrao(Entity.Entity):
         self.health -= dmg
 
     def shoot(self, bullets, IMG_ASSETS, game_screen):
-        bullet_speed = 5
+        bullet_speed = 7
         bullet = 'red bullet'
         now = time()
         r = random()
-        if now - self.timer > self.cooldown and random() > .5:
-            print('FIRE FIRE')
+        if now - self.timer > self.cooldown and random() > .3:
             bullets.fire(bullet, [self.x + round(self.width / 2), self.y], self._dimensions,
                              IMG_ASSETS, bullet_speed, game_screen)
             self.timer = time()

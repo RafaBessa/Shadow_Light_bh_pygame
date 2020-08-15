@@ -65,6 +65,7 @@ def main():
         player.draw(game_screen)
         inimigos.draw(game_screen)
         player_bullets.draw(game_screen)
+        enemy_bullets.draw(game_screen)
         pygame.display.update()
 
     run = True
@@ -88,6 +89,7 @@ def main():
                 player.resize(game_screen)
                 inimigos.resize(game_screen)
                 player_bullets.resize(game_screen)
+                enemy_bullets.resize(game_screen)
                 # inimigos.resize(game_screen)
 
         key = pygame.key.get_pressed()
@@ -97,6 +99,7 @@ def main():
             player.resize(game_screen)
             inimigos.resize(game_screen)
             player_bullets.resize(game_screen)
+            enemy_bullets.resize(game_screen)
         if key[pygame.K_F11]:
             game_screen.toggleFullscreen()
 
@@ -110,6 +113,7 @@ def main():
         inimigos.shoot(enemy_bullets, IMG_ASSETS, game_screen)
 
         # Bullets
+        enemy_bullets.move(dt, game_screen)
         player_bullets.move(dt, game_screen)
         player_bullets.hit(inimigos.INIMIGOS)
 

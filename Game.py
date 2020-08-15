@@ -49,6 +49,9 @@ def main():
     # Initializing window
     game_screen = Window("Shadow Light", DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS)
 
+    # Game master
+    GM = gm.GameMaster(IMG_ASSETS, SCALE_ASSETS)
+
     # Player
     player_fire_key = "red bullet"
     player_bullet_speed = -10
@@ -140,6 +143,9 @@ def main():
 
         player_bullets.move(dt, game_screen)
         player_bullets.hit(inimigos.INIMIGOS)
+
+        # New game state
+        inimigos = GM.detect_state(inimigos, game_screen)
 
     pygame.quit()
 

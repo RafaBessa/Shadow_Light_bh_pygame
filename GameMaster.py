@@ -16,16 +16,20 @@ class GameMaster:
         self.acceleration = .1
 
     def detect_state(self, inimigos, game_screen):
-        if len(inimigos.inimigos) == 0:
+        if len(inimigos.INIMIGOS) == 0:
             self.next_level(inimigos, game_screen)
             print('SPICY')
+        else:
+            return inimigos
 
     def next_level(self, inimigos, game_screen):
         self.lvl += 1
         self.quant = [i + 1 for i in self.quant]
         self.speed = self.speed * 1.01
+
         for i in range(self.lvl):
-            self.more(inimigos, game_screen)
+            inimigos = self.more(inimigos, game_screen)
+        return inimigos
 
     def more(self, inimigos, game_screen):
         formation = random.choice(self.form)
@@ -37,5 +41,7 @@ class GameMaster:
         speed = random.triangular(self.speed - 1, self.speed, self.speed + 1)
         acceleration = self.acceleration
 
-        return inimigos.criarSwarm(formation, quant, key, startcoordinates, space, game_screen.shape, speed,
-                                   acceleration, self.ASSETS, self.SCALE, mov)
+        inimigos.criarSwarm(formation, quant, key, startcoordinates, space, game_screen.shape, speed,
+                            acceleration, self.ASSETS, self.SCALE, mov)
+
+        return inimigos

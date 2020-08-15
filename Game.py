@@ -30,10 +30,10 @@ def main():
     t0 = time()
     # Initializing window
     game_screen = Window.Window("Don't Rain On Me", DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS)
-    player = Player.Player("guy", (500, 460), game_screen.shape, 2, IMG_ASSETS)
+    player = Player.Player("ship1", (500, 460), game_screen.shape, 2, IMG_ASSETS)
     player.draw(game_screen)
 
-    droplet = Droplet.Droplet("droplet", (500, 0), game_screen.shape, 10, 7, IMG_ASSETS)
+    droplet = Droplet.Droplet("roundguy", (400, 0), game_screen.shape, 1, 7, IMG_ASSETS)
     droplet.draw(game_screen)
 
     def redraw():

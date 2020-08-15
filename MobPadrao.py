@@ -12,6 +12,7 @@ class MobPadrao(Entity.Entity):
         self._acceleration = acceleration  # in heights per second squared
         self.acceleration = acceleration * self.img.get_height()
         self._movStrategy = movStategy
+        self._startcoordinate = coordinates
 
     def resize(self, window):
         super().resize(window)
@@ -27,12 +28,8 @@ class MobPadrao(Entity.Entity):
         self._movStrategy = fall
 
     def movimentar(self, dt):
-        self.coordinates, self.speed, self.acceleration = self.mover_strg.move(
-            self.coordinates, self.speed, self.acceleration, dt)
-    #     self.speed += self.acceleration * dt
-    #     self.coordinates[1] = round(self.coordinates[1] + self.speed * dt)
-
-
+        self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
+   
 
     def hit(self, dmg):
         self.health -= dmg

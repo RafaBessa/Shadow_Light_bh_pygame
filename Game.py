@@ -7,6 +7,7 @@ from Player import Player
 from MobPadrao import MobPadrao
 from Window import Window
 from InimigosController import Inimigos
+import MovimentoMob as mm
 # Default dimensions
 DEFAULT_WINDOW_SIZES = [(1120, 580), (1680, 870)]
 default_width, default_height = DEFAULT_WINDOW_SIZES[0]
@@ -46,7 +47,10 @@ def main():
     # Enemies
     inimigos = Inimigos()
     #inimigos.criar("roundguy", (400, 0), game_screen.shape, 0.5, 1, IMG_ASSETS)
-    inimigos.criarSwarm(inimigos.EnumFormations.V , 8, "roundguy", [250,0], 20, game_screen.shape, 0.5, 1, IMG_ASSETS, SCALE_ASSETS)
+    inimigos.criarSwarm(
+        inimigos.EnumFormations.V, 3, "roundguy", [250,0], 20, game_screen.shape,
+         2, 0.1, IMG_ASSETS, SCALE_ASSETS, mov_strategy=mm.Mov_ZigZag()
+         )
     #inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
    # inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
     #inimigos.criar("roundguy", [400, 100], game_screen.shape, 0, 0, IMG_ASSETS)

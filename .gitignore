@@ -1,0 +1,11 @@
+
+.idea/workspace.xml
+.idea/Shadow_Light_bh_pygame.iml
+.idea/modules.xml
+.idea/inspectionProfiles/profiles_settings.xml
+__pycache__/Bullets.cpython-37.pyc
+__pycache__/Droplet.cpython-37.pyc
+__pycache__/Entity.cpython-37.pyc
+__pycache__/InimigosController.cpython-37.pyc
+__pycache__/Player.cpython-37.pyc
+__pycache__/Window.cpython-37.pyc

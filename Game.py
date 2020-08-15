@@ -1,11 +1,10 @@
 import os
 import pygame  # ver 1.9.6
 from time import time
-
 import Player
 import Droplet
 import Window
-
+from InimigosController import Inimigos
 # Default dimensions
 DEFAULT_WINDOW_SIZES = [(1120, 580), (1680, 870)]
 default_width, default_height = DEFAULT_WINDOW_SIZES[0]
@@ -20,6 +19,7 @@ SCALE_ASSETS = {"ship1": .5,
                 "roundguy": 5}
 
 
+
 def collide(obj1, obj2):
     return obj1.mask.overlap(obj2.mask, (obj2.x - obj1.x, obj2.y - obj1.y)) is not None
 
@@ -32,14 +32,15 @@ def main():
     game_screen = Window.Window("Don't Rain On Me", DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS)
     player = Player.Player("ship1", (500, 460), game_screen.shape, 2, IMG_ASSETS)
     player.draw(game_screen)
-
-    droplet = Droplet.Droplet("roundguy", (400, 0), game_screen.shape, 1, 7, IMG_ASSETS)
-    droplet.draw(game_screen)
+    inimigos = Inimigos()
+    inimigos.criar("roundguy", (400, 0), game_screen.shape, 0.5, 1, IMG_ASSETS)
+    
+    #droplet.draw(game_screen)
 
     def redraw():
         game_screen.blit()
         player.draw(game_screen)
-        droplet.draw(game_screen)
+        inimigos.draw(game_screen)
         pygame.display.update()
 
     run = True
@@ -49,7 +50,7 @@ def main():
         dt = time() - t0
         t0 = time()
         # TODO: Delete this print after testing:
-        if collide(player, droplet):
+        if collide(player, inimigos.INIMIGOS[0]):
             print('boi is wet')
 
         # EVENTS
@@ -72,7 +73,7 @@ def main():
 
         # AFTER CHANGING THE SCREEN
         player.walk(key, game_screen, dt)
-        droplet.fall(dt)
+        inimigos.mover(dt)
 
     pygame.quit()
 

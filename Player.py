@@ -1,11 +1,11 @@
 from Entity import Entity
 import pygame
 from time import time
-
+import PlayerShoot as PS
 
 class Player(Entity):
 
-    def __init__(self, key, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed):
+    def __init__(self, key, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed, shotStrategy):
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
         self._speed = speed  # in widths per second
         self.speed = speed * self.img.get_width()
@@ -15,7 +15,7 @@ class Player(Entity):
 
         self.cooldown = .1
         self.timer = self.cooldown + 1
-
+        self._shootStrategy = shotStrategy
     def resize(self, window):
         super().resize(window)
         self.speed = self._speed * self.img.get_width()
@@ -57,10 +57,37 @@ class Player(Entity):
                 # Hugging upper border
                 self.coordinates[1] = 0
 
+
+    @property
+    def shoot_strg(self) -> PS.AbstractShoot:
+        return self._shootStrategy
+
+    @shoot_strg.setter
+    def shoot_strg(self, atirar: PS.AbstractShoot) -> None:
+        self._shootStrategy = self.shoot_met
+
     def shoot(self, bullets, IMG_ASSETS, game_screen):
+        #self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
         now = time()
         if now - self.timer > self.cooldown:
-            for i, bullet in enumerate(self.bullet_type):
-                bullets.fire(bullet, [self.x + round(self.width / 2), self.y], self._dimensions,
-                             IMG_ASSETS, self.bullet_speed[i], game_screen)
+            
+            self._shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.bullet_type, 
+            self.x, self.y, self.width, self.bullet_speed, self._dimensions)
+
+
             self.timer = time()
+
+
+
+    # def shoot(self, bullets, IMG_ASSETS, game_screen):
+    #     now = time()
+    #     if now - self.timer > self.cooldown:
+            
+
+    #         for i, bullet in enumerate(self.bullet_type):
+    #             bullets.fire(bullet, [self.x + round(self.width / 2), self.y], self._dimensions,
+    #                          IMG_ASSETS, self.bullet_speed[i], game_screen)
+           
+
+
+    #         self.timer = time()

@@ -35,11 +35,10 @@ class MobPadrao(Entity.Entity):
 
     @mover_strg.setter
     def mover_strg(self, mover: mm.AbstractMoviment) -> None:
-        self._movStrategy = self.fall
+        self._movStrategy = mover
 
     def movimentar(self, dt):
         self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
-   
 
     def hit(self, dmg):
         self.health -= dmg

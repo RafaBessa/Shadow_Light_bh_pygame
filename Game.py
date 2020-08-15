@@ -8,6 +8,7 @@ from MobPadrao import MobPadrao
 from Window import Window
 from InimigosController import Inimigos
 import MovimentoMob as mm
+import PlayerShoot as ps
 # Default dimensions
 DEFAULT_WINDOW_SIZES = [(1120, 580), (1680, 870)]
 default_width, default_height = DEFAULT_WINDOW_SIZES[0]
@@ -41,7 +42,7 @@ def main():
     player_bullet_speed = -10
     player_speed = 8
     player = Player("ship1", [500, 460], game_screen.shape, player_speed,
-                    IMG_ASSETS, player_fire_key, player_bullet_speed)
+                    IMG_ASSETS, player_fire_key, player_bullet_speed, ps.Shoot_Double())
     player.draw(game_screen)
 
     # Enemies

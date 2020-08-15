@@ -46,7 +46,7 @@ class Inimigos:
         if type == self.EnumFormations.LINE:
             x, y = startcoordinates
             for i in range(0,quant):
-                cord.append((x,y))
+                cord.append([x,y])
                 x+=space + scaleDim[0]
                 if (x + scaleDim[0]) >= screen_dim[0]:
                     break
@@ -58,19 +58,19 @@ class Inimigos:
             if (quant%2) == 1:
                 quant-=1
                 if (x + scaleDim[0]) <= screen_dim[0]:
-                    cord.append((x,y))
+                    cord.append([x,y])
                     y -= space
 
             for i in range(0,quant,2):
                 if (xd + scaleDim[0]) <= screen_dim[0]:
                     xd +=  scaleDim[0]
-                    cord.append((xd,y))
+                    cord.append([xd,y])
                     xd += space
                    
             
                 if (xe - scaleDim[0]) >= 0:
                     xe -= scaleDim[0]
-                    cord.append((xe,y))
+                    cord.append([xe,y])
                     xe -= space
                     
                 

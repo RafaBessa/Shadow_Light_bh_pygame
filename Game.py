@@ -80,7 +80,7 @@ def main():
             elif event.type == pygame.VIDEORESIZE and not game_screen._fullscreen:
                 game_screen.resize(event.w, event.h)
                 player.resize(game_screen)
-                #inimigos.resize(game_screen)
+                inimigos.resize(game_screen)
                 # inimigos.resize(game_screen)
 
         key = pygame.key.get_pressed()

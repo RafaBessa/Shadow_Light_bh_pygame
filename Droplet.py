@@ -1,7 +1,7 @@
 import Entity
 class Droplet(Entity.Entity):
-    def __init__(self, key, coordinates, dimensions, speed, acceleration):
-        super().__init__(key, coordinates, dimensions)
+    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS):
+        super().__init__(key, coordinates, dimensions, IMG_ASSETS)
 
         self._speed = speed  # in heights per second
         self.speed = speed*self.img.get_height()

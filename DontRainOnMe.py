@@ -12,18 +12,18 @@ import Window
 # This is meant as a simple demonstration of how to resize the window using pygame, but it is not how
 # it should be generally implemented for games
 
-# # Default dimensions
-# DEFAULT_WINDOW_SIZES = [(1120, 580), (1680, 870)]
-# default_width, default_height = DEFAULT_WINDOW_SIZES[0]
+# Default dimensions
+DEFAULT_WINDOW_SIZES = [(1120, 580), (1680, 870)]
+default_width, default_height = DEFAULT_WINDOW_SIZES[0]
 
-# # Background
-# BACKGROUND = pygame.image.load(os.path.join("assets", "background.png"))
-# BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
+# Background
+BACKGROUND = pygame.image.load(os.path.join("assets", "background.png"))
+BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
 
-# IMG_ASSETS = {"guy": pygame.image.load(os.path.join("assets", "guy.png")),
-#               "droplet": pygame.image.load(os.path.join("assets", "droplet.png"))}
-# SCALE_ASSETS = {"guy": .5,
-#                 "droplet": 5}
+SCALE_ASSETS = {"guy": .5,
+                "droplet": 5}
+IMG_ASSETS = {"guy": pygame.image.load(os.path.join("assets", "guy.png")),
+              "droplet": pygame.image.load(os.path.join("assets", "droplet.png"))}
 
 
 def main():
@@ -31,11 +31,11 @@ def main():
     clock = pygame.time.Clock()
     t0 = time()
     # Initializing window
-    game_screen = Window.Window("Don't Rain On Me")
-    player = Player.Player("guy", (500, 460), game_screen.shape, 2)
+    game_screen = Window.Window("Don't Rain On Me", DEFAULT_WINDOW_SIZES, BACKGROUND, SCALE_ASSETS, IMG_ASSETS)
+    player = Player.Player("guy", (500, 460), game_screen.shape, 2, IMG_ASSETS)
     player.draw(game_screen)
 
-    droplet = Droplet.Droplet("droplet", (500, 0), game_screen.shape, 10, 7)
+    droplet = Droplet.Droplet("droplet", (500, 0), game_screen.shape, 10, 7, IMG_ASSETS)
     droplet.draw(game_screen)
 
     def redraw():

@@ -2,13 +2,10 @@
 import pygame
 import os
 
-IMG_ASSETS = {"guy": pygame.image.load(os.path.join("assets", "guy.png")),
-              "droplet": pygame.image.load(os.path.join("assets", "droplet.png"))}
-SCALE_ASSETS = {"guy": .5,
-                "droplet": 5}
+
 
 class Entity:
-    def __init__(self, key, coordinates, dimensions):
+    def __init__(self, key, coordinates, dimensions, IMG_ASSETS):
         self.coordinates = coordinates
         self._dimensions = dimensions
 

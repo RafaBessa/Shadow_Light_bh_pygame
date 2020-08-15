@@ -2,8 +2,6 @@ import os
 import pygame  # ver 1.9.6
 from time import time
 
-# DISCLAIMER: GLaDOS art made by Nannerman, available at https://www.pixilart.com/
-
 # Last updated: 08/08/2020 (day/month/year)
 
 # This is meant as a simple demonstration of how to resize the window using pygame, but it is not how
@@ -122,7 +120,15 @@ class Entity:
     @property
     def height(self):
         return self.img.get_height()
-
+    @property
+    def mask(self):
+        return pygame.mask.from_surface(self.img)
+    @property
+    def x(self):
+        return self.coordinates[0]
+    @property
+    def y(self):
+        return self.coordinates[1]
 
 class Player(Entity):
 
@@ -189,8 +195,10 @@ class Droplet(Entity):
 
     def fall(self, dt):
         self.speed += self.acceleration*dt
-        self.coordinates = (self.coordinates[0], self.coordinates[1]+self.speed*dt)
+        self.coordinates = (self.coordinates[0], round(self.coordinates[1]+self.speed*dt))
 
+def collide(obj1, obj2):
+    return obj1.mask.overlap(obj2.mask, (obj2.x - obj1.x, obj2.y - obj1.y)) is not None
 
 
 def main():
@@ -217,6 +225,9 @@ def main():
         clock.tick(FPS)
         dt = time() - t0
         t0 = time()
+        # TODO: Delete this print after testing:
+        if collide(player, droplet):
+            print('boi is wet')
 
         # EVENTS
         for event in pygame.event.get():

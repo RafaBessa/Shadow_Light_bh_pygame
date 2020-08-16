@@ -1,5 +1,5 @@
 from copy import copy
-from math import exp, log
+from math import exp, log, atan
 
 import pygame
 import MovimentoMob as mm
@@ -31,17 +31,15 @@ class GameMaster:
         self.quant = [2]
         self.Bkeys = ["roundguy", "zag"]
         self.Wkeys = ["white"]
-        #self.cooldowns = [0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.]
+        # self.cooldowns = [0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.]
         self.cooldowns = np.arange(0.5, 1.5, 0.05)
 
         self.player = None
-        self.colors = [ColorEnum.Light,ColorEnum.Shadow]
+        self.colors = [ColorEnum.Light, ColorEnum.Shadow]
         self.Multiple_keys = ["BBEG"]
         self.Component_key = {"BBEG": ['bbeg center', 'white left', 'blue right']}
-       
-   
 
-        self.speed = 2
+        self.speed = lambda: 3.25 ** atan(atan(self.lvl)) + .25
         self.acceleration = .1
 
         self.ASSETS = IMG_ASSETS
@@ -62,7 +60,7 @@ class GameMaster:
                                         "Triple": +0.015}
 
     def detect_state(self, inimigos, shape):
-        if len(inimigos.INIMIGOS) == 0:
+        if len(inimigos.INIMIGOS) <= 3:
             self.next_level(inimigos, shape)
             return inimigos
         else:
@@ -71,9 +69,8 @@ class GameMaster:
     def next_level(self, inimigos, shape):
         self.lvl += 1
         self.quant = [i + 1 for i in self.quant]
-        self.speed = self.speed*1.1
 
-        if (self.lvl%3 == 0): #adiciona os assistentes
+        if (self.lvl % 3 == 0):  # adiciona os assistentes
             self.player.CreateAssistente()
 
         if self.ShootTypeProb["Basic"] > 0:
@@ -103,7 +100,8 @@ class GameMaster:
         else:
             key = random.choice(self.Bkeys)
         space = 40
-        speed = random.triangular(self.speed - 1, self.speed, self.speed + 1)
+        speed = self.speed()
+        speed = random.triangular(low=speed - 1, mode=speed, high=speed + 1)
         acceleration = self.acceleration
         cd = random.choice(self.cooldowns)
 

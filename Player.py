@@ -230,7 +230,7 @@ class Player(Entity):
         if DeathCount >= 1:
             #     print(str(self.bullet_speed) + " , " +  str(self.cooldown))
             self.bullet_speed *= 1.10
-            self.cooldown *= 1.15
+            self.cooldown *= .95
             self.speed *= 1.06
             #self.CreateAssistente()
             # print(str(self.speed))

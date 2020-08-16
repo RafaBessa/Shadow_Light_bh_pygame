@@ -34,19 +34,23 @@ class Mov_ZigZag(AbstractMoviment):
         return coordinates, speed
 
 class Mov_DiagRight(AbstractMoviment):
-
+    def __init__(self, x_speed):
+        self.x_speed = x_speed  # seno do angulo, .17 é bom
     def move(self, coordinates, speed, startcoordinate, dt):
         ZigZageamento = 100  # variacao max da nave
         coordinates[1] = round(coordinates[1] + speed * dt)
-        coordinates[0] = round(coordinates[0] + speed/2 * dt)
+        # sin(10 degrees) = .17
+        coordinates[0] = round(coordinates[0] + speed*self.x_speed * dt)
 
         return coordinates, speed
 
 class Mov_DiagLeft(AbstractMoviment):
-
+    def __init__(self, x_speed):
+        self.x_speed = x_speed  # seno do angulo, .17 é bom
     def move(self, coordinates, speed, startcoordinate, dt):
         ZigZageamento = 100  # variacao max da nave
         coordinates[1] = round(coordinates[1] + speed * dt)
-        coordinates[0] = round(coordinates[0] - speed/2 * dt)
+        # sin(10 degrees) = .17
+        coordinates[0] = round(coordinates[0] - speed*self.x_speed * dt)
 
         return coordinates, speed

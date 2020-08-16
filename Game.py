@@ -45,12 +45,21 @@ SCALE_ASSETS = {"ship1": .2,
                 "white": 1.5,
                 "light bullet": .2}
 
-# frames = list(zip(images, [200, 200, 600]))
-# animObj = pyganim.PygAnimation(frames)
-# animObj.play()
+def RIP_framerate(framerate):
+    s = 0
+    for fps in framerate[1:-1]:
+        s += fps
+    mean = s / (len(framerate) - 2)
+    s = 0
+    for fps in framerate[1:-1]:
+        s += (fps - mean)**2
+    desvpad = (s / (len(framerate) - 2))**0.5
+    print("{:.1f}".format(mean), '+-', "{:.1f}".format(desvpad))
+
+framerate = []
 
 def main():
-    FPS: int = 80
+    FPS: int = 60  # a real é algo como 50 +- 10
     clock = pygame.time.Clock()
     t0 = time()
 
@@ -70,8 +79,7 @@ def main():
     player_bullet_speed = -10
     player_speed = 12
     player = Player("ship1", [500, 460], game_screen.shape, player_speed, IMG_ASSETS,
-                    player_fire_key, player_bullet_speed,
-                    ps.Shoot_Basic(), mb.Mov_LinearFall())
+                    player_fire_key, player_bullet_speed)
 
     # Talvez o padrão de tiro deva ser acessado diretamente em PlayerShoot pelo disparo que faça sentido
     player.draw(game_screen)
@@ -106,7 +114,10 @@ def main():
         clock.tick(FPS)
         dt = time() - t0
         t0 = time()
+        # ACTUAL FRAMERATE
+        # framerate.append(1/dt)
 
+        # print(round(framerate[-1]))
         if player.health <= 0:
             lost = True
             lost_time += dt
@@ -171,6 +182,8 @@ def main():
         inimigos.resize(game_screen)
 
     print(player.score)
+    #RIP_framerate(framerate)
+
     pygame.quit()
 
 

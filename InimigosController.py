@@ -3,6 +3,8 @@ from enum import Enum
 from copy import copy
 import MovimentoMob as mm
 import PlayerShoot as PS
+
+
 class Inimigos:
     class EnumFormations(Enum):
         LINE = 1
@@ -11,9 +13,12 @@ class Inimigos:
     def __init__(self):
         self.INIMIGOS = []
 
-    def criar(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS,bulletType,cd=0.5, mov_strat=mm.Mov_LinearFall(), life =1, shootStrategy = PS.Shoot_Basic()):
-        self.INIMIGOS.append(MobPadrao(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS,bulletType, mov_strat,  cooldown=cd, life=life, shootStrategy=shootStrategy))
-        
+    def criar(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, cd=0.5,
+              mov_strat=mm.Mov_LinearFall(), life=1, shootStrategy=PS.Shoot_Basic()):
+        self.INIMIGOS.append(
+            MobPadrao(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, mov_strat, cooldown=cd,
+                      life=life, shootStrategy=shootStrategy))
+
     def mover(self, game_screen, dt):
         killNumbers = 0
         PassingNumber = 0
@@ -42,18 +47,18 @@ class Inimigos:
             i.shoot(bullets, IMG_ASSETS, game_screen)
 
     def criarSwarm(self, type, quant, key, startcoordinates, space, dimension, speed, acceleration, IMG_ASSETS,
-                   SCALE_ASSETS, bullettype, mov_strategy=mm.Mov_LinearFall(), life=1, cd = 0.5, shootStrategy = PS.Shoot_Basic()):
+                   SCALE_ASSETS, bullettype, mov_strategy=mm.Mov_LinearFall(), life=1, cd=0.5,
+                   shootStrategy=PS.Shoot_Basic()):
 
         img_dim = (IMG_ASSETS[key].get_width(), IMG_ASSETS[key].get_height())  # pega a dimensão do asset
         scale = SCALE_ASSETS[key]
-       
+
         cord = self.__coordenadaTipo(type, quant, space, startcoordinates, dimension, img_dim, scale)
 
         for c in cord:
-            self.criar(key, c, dimension, speed, acceleration, IMG_ASSETS, bullettype, mov_strat=mov_strategy,life= life,cd=cd,shootStrategy = shootStrategy)
+            self.criar(key, c, dimension, speed, acceleration, IMG_ASSETS, bullettype, mov_strat=mov_strategy,
+                       life=life, cd=cd, shootStrategy=shootStrategy)
         # self.INIMIGOS.append(MobPadrao(key, c, dimension, speed, acceleration, IMG_ASSETS))
-
-
 
     # tenta gerar coordenadas para os inimigos, com base nos parametros
     def __coordenadaTipo(self, type, quant, space, startcoordinates, screen_dim, img_dim, scale):
@@ -61,11 +66,11 @@ class Inimigos:
         scaleDim = (round(img_dim[0] * scale), round(img_dim[1] * scale))
         if type == self.EnumFormations.LINE:
             x, y = startcoordinates
-      
+
             for i in range(0, quant):
                 cord.append([x, y])
                 x += space + scaleDim[0]
-                if (x + scaleDim[0]) >= screen_dim[0]  :
+                if (x + scaleDim[0]) >= screen_dim[0]:
                     break
 
         if type == self.EnumFormations.V:

@@ -1,7 +1,5 @@
 from copy import copy
-from math import exp, log, atan
-
-import pygame
+from math import atan
 import MovimentoMob as mm
 import random
 from ColorEnum import ColorEnum
@@ -33,7 +31,6 @@ class GameMaster:
         self.Wkeys = ["white"]
         self.boss_Bkeys = ["roundguy B"]
         self.boss_Wkeys = ["white B"]
-        # self.cooldowns = [0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.]
         self.cooldowns = np.arange(0.5, 1.5, 0.05)
 
         self.player = None
@@ -57,12 +54,12 @@ class GameMaster:
         self.ShootTypeProb = {"Basic": 0.75,
                               "Double": 0.2,
                               "Triple": 0.05}
-                              
+
         self.LevelShootProbRearanger = {"Basic": -0.05,
                                         "Double": +0.035,
                                         "Triple": +0.015}
 
-        self.assistBonus = {"shoot":0.33,
+        self.assistBonus = {"shoot": 0.33,
                             "cd": 0.33,
                             "bulletspeed": 0.33}
 
@@ -84,23 +81,23 @@ class GameMaster:
                 wr = WeightedRandomizer(self.assistBonus)
                 bonus = wr.random()
 
-                if(bonus == "shoot"):
+                if (bonus == "shoot"):
                     for a in self.player.Assistents:
-                        if( a.killStreak + 1  < len(a._ShootType)):
+                        if (a.killStreak + 1 < len(a._ShootType)):
                             a.killStreak += 1
                         else:
                             self.assistBonus["shoot"] = 0.0
 
                         a.shootStrategy = a._ShootType[a.killStreak]
-                    print (bonus)
+                    print(bonus)
                 elif (bonus == "cd"):
                     for a in self.player.Assistents:
                         a.cooldowns *= 0.9
-                    print (bonus)
-                elif  (bonus == "bulletspeed"):
+                    print(bonus)
+                elif (bonus == "bulletspeed"):
                     for a in self.player.Assistents:
                         a.bulletspeed *= 1.1
-                    print (bonus)
+                    print(bonus)
 
         if self.ShootTypeProb["Basic"] > 0:
             for key in self.ShootTypeProb:

@@ -2,12 +2,11 @@ from time import time
 
 from random import random
 from copy import copy
-import Entity
+from Entity import Entity
 import MovimentoMob as mm
-import MovimentoBala as mb
 import pygame
 import PlayerShoot as PS
-class MobPadrao(Entity.Entity):
+class MobPadrao(Entity):
     def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, movStategy, cooldown, life = 1, shootStrategy = PS.Shoot_Basic()):
 
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)

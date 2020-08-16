@@ -1,11 +1,9 @@
 from Entity import Entity
 import pygame
-from time import time
 import PlayerShoot as PS
 import math
 from ColorEnum import ColorEnum
 from time import time
-import AudioCaller
 
 class Player(Entity):
     _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double(), PS.Shoot_Triple()]
@@ -238,7 +236,6 @@ class Player(Entity):
         # if PassingCount > 0:
         #     self.killStreak = 0
         if DeathCount >= 1:
-            #     print(str(self.bullet_speed) + " , " +  str(self.cooldown))
             self.cooldown *= .95
             if self.bullet_speed < -200:
                 self.bullet_speed = -200
@@ -266,8 +263,8 @@ class Player(Entity):
         else:
             cord = [self.coordinates[0] - self.width - 10 ,self.coordinates[1]] 
         
-        self.Assistents.append(Player(cord,self._dim, self.speed,self._IMG_ASS, "red bullet", -20.0, isplayer=False, startcolor=self.color ))
+        self.Assistents.append(Player(cord,self._dim, self.speed,self._IMG_ASS, "red bullet", -20.0, isplayer=False,
+                                      startcolor=self.color ))
         for a in self.Assistents:
             a.cooldown = 0.5
         self.resize(self._window)
-        

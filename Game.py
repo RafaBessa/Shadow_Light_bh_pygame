@@ -7,14 +7,9 @@ import pygame  # ver 1.9.6
 from time import time
 from Bullets import Bullets
 from Player import Player
-from MobPadrao import MobPadrao
 from Window import Window
 from InimigosController import Inimigos
-import MovimentoMob as mm
-import PlayerShoot as ps
 import GameMaster as gm
-from ColorEnum import ColorEnum
-import MovimentoBala as mb
 
 pygame.font.init()
 pygame.mixer.init()
@@ -105,7 +100,6 @@ def main():
                     player_fire_key, player_bullet_speed,window=game_screen)
 
     GM.player = player
-    # Talvez o padrão de tiro deva ser acessado diretamente em PlayerShoot pelo disparo que faça sentido
     player.draw(game_screen)
 
     # Enemies
@@ -117,8 +111,8 @@ def main():
     # )
 
     # Bullets
-    player_bullets = Bullets([], IMG_ASSETS)
-    enemy_bullets = Bullets([], IMG_ASSETS)
+    player_bullets = Bullets([])
+    enemy_bullets = Bullets([])
 
     def redraw():
         game_screen.blit()
@@ -140,8 +134,8 @@ def main():
         t0 = time()
         # ACTUAL FRAMERATE
         # framerate.append(1/dt)
-
         # print(round(framerate[-1]))
+
         if player.health <= 0:
             lost = True
             lost_time += dt
@@ -197,7 +191,6 @@ def main():
         player_bullets.move(dt, game_screen)
         player_bullets.hit(inimigos.INIMIGOS)
         # New game state
-        # inimigos = GM.detect_state(inimigos, (BG_W, BG_H))
         GM.detect_state(inimigos, game_screen.shape)
         inimigos.resize(game_screen)
 

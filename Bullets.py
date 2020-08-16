@@ -3,7 +3,7 @@ from ColorEnum import ColorEnum
 import MovimentoBala as mb
 
 class Bullets:
-    def __init__(self, bullet_list, IMG_ASSETS):
+    def __init__(self, bullet_list):
         self.bullets = bullet_list
 
     def fire(self, key, coordinates, dimensions, IMG_ASSETS, speed, game_screen, type, fire_pattern):

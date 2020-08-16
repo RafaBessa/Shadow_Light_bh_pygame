@@ -26,10 +26,11 @@ default_width, default_height = DEFAULT_WINDOW_SIZES[0]
 BACKGROUND = pygame.image.load(os.path.join("assets", "background.png"))
 BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
 
-IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
+IMG_ASSETS = {"ship dark": pygame.image.load(os.path.join("assets", "ship1.png")),
+              "ship light": pygame.image.load(os.path.join("assets", "ship2.png")),
               "roundguy": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "roundguy.png")), 180),
               "red bullet": pygame.image.load(os.path.join("assets", "red bullet.png")),
-              "healthbar":pygame.image.load(os.path.join("assets", "healthbar.png")),
+              "healthbar": pygame.image.load(os.path.join("assets", "healthbar.png")),
               "white": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "white.png")), 180),
               "dark bullet": pygame.image.load(os.path.join("assets", "dark bullet.png")),
               "light bullet": pygame.image.load(os.path.join("assets", "light bullet.png")),
@@ -37,10 +38,11 @@ IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
               "hit light": pygame.image.load(os.path.join("assets", "hit light.png")),
               "hit dark": pygame.image.load(os.path.join("assets", "hit dark.png"))}
 
-SCALE_ASSETS = {"ship1": .2,
+SCALE_ASSETS = {"ship dark": .2,
+                "ship light": .2,
                 "roundguy": .2,
                 "red bullet": .2,
-                "healthbar": 3,
+                "healthbar": 1.6,
                 "dark bullet": .2,
                 "rlight bullet": .2,
                 "zag": .2,
@@ -49,6 +51,7 @@ SCALE_ASSETS = {"ship1": .2,
                 "hit light": .2,
                 "hit dark": .2}
 
+
 def RIP_framerate(framerate):
     s = 0
     for fps in framerate[1:-1]:
@@ -56,11 +59,13 @@ def RIP_framerate(framerate):
     mean = s / (len(framerate) - 2)
     s = 0
     for fps in framerate[1:-1]:
-        s += (fps - mean)**2
-    desvpad = (s / (len(framerate) - 2))**0.5
+        s += (fps - mean) ** 2
+    desvpad = (s / (len(framerate) - 2)) ** 0.5
     print("{:.1f}".format(mean), '+-', "{:.1f}".format(desvpad))
 
+
 framerate = []
+
 
 def main():
     FPS: int = 60  # a real é algo como 50 +- 10
@@ -82,7 +87,7 @@ def main():
     player_fire_key = "red bullet"
     player_bullet_speed = -10.0
     player_speed = 12
-    player = Player("ship1", [500, 460], game_screen.shape, player_speed, IMG_ASSETS,
+    player = Player([500, 460], game_screen.shape, player_speed, IMG_ASSETS,
                     player_fire_key, player_bullet_speed)
 
     # Talvez o padrão de tiro deva ser acessado diretamente em PlayerShoot pelo disparo que faça sentido
@@ -165,10 +170,8 @@ def main():
         if key[pygame.K_SPACE]:
             player.shoot(player_bullets, IMG_ASSETS, game_screen)
         if key[pygame.K_e]:
-            player.ChangeColor()
-        if key[pygame.K_e]:
-            player.ChangeColor()
-            
+            player.ChangeColor(game_screen)
+
         # Enemies
         DeathCount, PassingCount = inimigos.mover(game_screen, dt)
         player.scoreUpdate(DeathCount, PassingCount)
@@ -181,12 +184,12 @@ def main():
         player_bullets.move(dt, game_screen)
         player_bullets.hit(inimigos.INIMIGOS)
         # New game state
-       # inimigos = GM.detect_state(inimigos, (BG_W, BG_H))
+        # inimigos = GM.detect_state(inimigos, (BG_W, BG_H))
         GM.detect_state(inimigos, game_screen.shape)
         inimigos.resize(game_screen)
 
     print(player.score)
-    #RIP_framerate(framerate)
+    # RIP_framerate(framerate)
 
     pygame.quit()
 

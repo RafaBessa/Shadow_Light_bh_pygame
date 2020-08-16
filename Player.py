@@ -138,8 +138,8 @@ class Player(Entity):
         self.score += DeathCount
         self.killStreak += DeathCount
         _streakValue = 10
-        if PassingCount > 0:
-            self.killStreak = 0
+        # if PassingCount > 0:
+        #     self.killStreak = 0
 
         upgradetype = math.floor(self.killStreak / _streakValue)
         if upgradetype >= len(self._ShootType):

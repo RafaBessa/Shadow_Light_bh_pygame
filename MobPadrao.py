@@ -43,11 +43,11 @@ class MobPadrao(Entity.Entity):
         self.health -= dmg
 
     def shoot(self, bullets, IMG_ASSETS, game_screen):
-        bullet_speed = 7
+        bullet_speed = 4
         bullet = 'red bullet'
         now = time()
         r = random()
         if now - self.timer > self.cooldown and random() > .3:
-            bullets.fire(bullet, [self.x + round(self.width / 2), self.y], self._dimensions,
-                             IMG_ASSETS, bullet_speed, game_screen, self.bulletType, mb.Mov_LinearFall())
+            bullets.fire(bullet, [self.x + round(self.width / 2), self.y + round(0.8 * self.height)], self._dimensions,
+                             IMG_ASSETS, (bullet_speed + round(0.1*self.speed)), game_screen, self.bulletType, mb.Mov_LinearFall())
             self.timer = time()

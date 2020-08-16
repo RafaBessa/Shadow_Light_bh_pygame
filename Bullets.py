@@ -64,4 +64,4 @@ class Bullet(Entity):
 
 
 def collide(obj1, obj2):
-    return obj1.mask.overlap(obj2.mask, (obj2.x - obj1.x, obj2.y - obj1.y)) is not None
+    return obj1.mask.overlap(obj2.mask, (int(obj2.x - obj1.x), int(obj2.y - obj1.y))) is not None

@@ -36,7 +36,10 @@ IMG_ASSETS = {"ship dark": pygame.image.load(os.path.join("assets", "ship1.png")
               "light bullet": pygame.image.load(os.path.join("assets", "light bullet.png")),
               "zag": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "zag.png")), 180),
               "hit light": pygame.image.load(os.path.join("assets", "hit light.png")),
-              "hit dark": pygame.image.load(os.path.join("assets", "hit dark.png"))}
+              "hit dark": pygame.image.load(os.path.join("assets", "hit dark.png")),
+              "bbeg center": pygame.image.load(os.path.join("assets", "bbeg center.png")),
+              "blue right": pygame.image.load(os.path.join("assets", "blue right.png")),
+              "white left": pygame.image.load(os.path.join("assets", "white left.png"))}
 
 SCALE_ASSETS = {"ship dark": .2,
                 "ship light": .2,
@@ -49,7 +52,10 @@ SCALE_ASSETS = {"ship dark": .2,
                 "white": 1.5,
                 "light bullet": .2,
                 "hit light": .2,
-                "hit dark": .2}
+                "hit dark": .2,
+                "bbeg center": 1,
+                "blue right": .2,
+                "white left": .2}
 
 
 def RIP_framerate(framerate):
@@ -161,9 +167,7 @@ def main():
 
         # AFTER CHANGING THE SCREEN
         # Player
-        player.high_precision = False
-        if key[pygame.K_LSHIFT]:
-            player.high_precision = True
+        player.high_precision = key[pygame.K_LSHIFT]
 
         player.move(key, game_screen, dt)
 

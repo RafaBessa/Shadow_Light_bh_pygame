@@ -55,6 +55,13 @@ class Inimigos:
 
         pass
 
+    def criarAglomerado(self, key, startcoordinates,dimension, speed, acceleration, IMG_ASSETS,
+                   SCALE_ASSETS, bullettype, mov_strategy=mm.Mov_LinearFall(), life=1, cd=0.5):
+
+        self.criar(key, startcoordinates, dimension, speed, acceleration, IMG_ASSETS, bullettype, mov_strat=mov_strategy,
+                       life=life, cd=cd)
+
+
     # tenta gerar coordenadas para os inimigos, com base nos parametros
     def __coordenadaTipo(self, type, quant, space, startcoordinates, screen_dim, img_dim, scale):
         cord = []

@@ -3,7 +3,8 @@ import pygame
 from time import time
 import PlayerShoot as PS
 import math
-
+from ColorEnum import ColorEnum 
+from time import time
 
 class Player(Entity):
     _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double()]
@@ -35,7 +36,18 @@ class Player(Entity):
         self.score = 0
         self.killStreak = 0
         self.score_time = 0
+        self.color = ColorEnum.Light
+        self.colorDelay = 0
 
+    def ChangeColor(self):
+        if (time() - self.colorDelay ) < 0.15:
+            return
+        self.colorDelay = time()
+        if self.color == ColorEnum.Light :
+            self.color = ColorEnum.Shadow
+        else:
+            self.color = ColorEnum.Light
+    
     def draw(self, window):
 
         super().draw(window)
@@ -54,6 +66,7 @@ class Player(Entity):
     def hit(self, dmg):
         self.health -= dmg
         self.healthbar.hit(dmg)
+        self.killStreak = 0
 
     def resize(self, window):
         super().resize(window)
@@ -109,9 +122,9 @@ class Player(Entity):
         # self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
         now = time()
         if now - self.timer > self.cooldown:
-            self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.bullet_type,
+            self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen,  self.color,
                                      self.x, self.y, self.width, self.bullet_speed, self._dimensions)
-
+          
             self.timer = time()
 
     def scoreUpdate(self, DeathCount, PassingCount):
@@ -121,11 +134,12 @@ class Player(Entity):
         self.score_time = now
         self.score += DeathCount
         self.killStreak += DeathCount
-        _streakValue = 1
+        _streakValue = 10
         if PassingCount > 0:
-            killStreak = 0
-
+            self.killStreak = 0
+        
         upgradetype = math.floor(self.killStreak / _streakValue)
         if upgradetype >= len(self._ShootType):
             upgradetype = len(self._ShootType) - 1
+
         self.shootStrategy = self._ShootType[upgradetype]

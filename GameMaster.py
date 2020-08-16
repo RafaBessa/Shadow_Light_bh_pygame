@@ -1,13 +1,14 @@
 import pygame
 import MovimentoMob as mm
 import random
-
+from ColorEnum import ColorEnum
 
 class GameMaster:
     def __init__(self, IMG_ASSETS, SCALE_ASSETS):
         self.lvl = 0
         self.movs = [mm.Mov_LinearFall(), mm.Mov_ZigZag()]
         self.quant = [2]
+        self.colors = [ColorEnum.Light,ColorEnum.Shadow] 
         self.keys = ["roundguy"]
         self.ASSETS = IMG_ASSETS
         self.SCALE = SCALE_ASSETS
@@ -35,12 +36,13 @@ class GameMaster:
         key = random.choice(self.keys)
         quant = random.choice(self.quant)
         mov = random.choice(self.movs)
+        color = random.choice(self.colors)
         startcoordinates = [250, 0]
         space = 40
         speed = random.triangular(self.speed - 1, self.speed, self.speed + 1)
         acceleration = self.acceleration
 
         inimigos.criarSwarm(formation, quant, key, startcoordinates, space, shape, speed,
-                            acceleration, self.ASSETS, self.SCALE, mov)
+                            acceleration, self.ASSETS, self.SCALE, color, mov)
 
         return inimigos

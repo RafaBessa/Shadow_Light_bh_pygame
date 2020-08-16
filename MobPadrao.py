@@ -8,11 +8,11 @@ import Entity
 import MovimentoMob as mm
 
 class MobPadrao(Entity.Entity):
-    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, movStategy):
+    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType,movStategy):
 
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
         self.health = 1
-
+        self.bulletType = bulletType
         self._speed = speed  # in heights per second
         self.speed = speed * self.img.get_height() #px/s
 
@@ -50,5 +50,5 @@ class MobPadrao(Entity.Entity):
         r = random()
         if now - self.timer > self.cooldown and random() > .3:
             bullets.fire(bullet, [self.x + round(self.width / 2), self.y], self._dimensions,
-                             IMG_ASSETS, bullet_speed, game_screen)
+                             IMG_ASSETS, bullet_speed, game_screen, self.bulletType)
             self.timer = time()

@@ -1,7 +1,7 @@
 import pygame
 import MovimentoMob as mm
 import random
-
+from ColorEnum import ColorEnum
 
 class GameMaster:
     def __init__(self, IMG_ASSETS, SCALE_ASSETS):
@@ -9,6 +9,7 @@ class GameMaster:
         self.movs = [mm.Mov_LinearFall(), mm.Mov_ZigZag()]
         self.quant = [2]
         self.keys = ["roundguy", "white", "zag"]
+        self.colors = [ColorEnum.Light,ColorEnum.Shadow]
         self.ASSETS = IMG_ASSETS
         self.SCALE = SCALE_ASSETS
         self.speed = 2
@@ -36,11 +37,12 @@ class GameMaster:
         quant = random.choice(self.quant)
         mov = random.choice(self.movs)
         startcoordinates = [random.randrange(0, shape[0]), random.randrange(-round(shape[1]*self.lvl/2), 0)]
+        color = random.choice(self.colors)
         space = 40
         speed = random.triangular(self.speed - 1, self.speed, self.speed + 1)
         acceleration = self.acceleration
 
         inimigos.criarSwarm(formation, quant, key, startcoordinates, space, shape, speed,
-                            acceleration, self.ASSETS, self.SCALE, mov)
+                            acceleration, self.ASSETS, self.SCALE, color, mov)
 
         return inimigos

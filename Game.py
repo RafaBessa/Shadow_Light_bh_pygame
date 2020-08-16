@@ -10,7 +10,7 @@ from InimigosController import Inimigos
 import MovimentoMob as mm
 import PlayerShoot as ps
 import GameMaster as gm
-
+from ColorEnum import ColorEnum
 
 pygame.font.init()
 
@@ -27,8 +27,8 @@ IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
               "red bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "red bullet.png")), 180),
               "healthbar": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180),
               "white": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "white.png")), 180),
-              "dark bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180),
-              "light bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180),
+              "dark bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "dark bullet.png")), 180),
+              "light bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "light bullet.png")), 180),
               "zag": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "zag.png")), 180)}
 
 SCALE_ASSETS = {"ship1": .2,
@@ -38,7 +38,8 @@ SCALE_ASSETS = {"ship1": .2,
                 "dark bullet": .2,
                 "rlight bullet": .2,
                 "zag": .2,
-                "white": 1.5}
+                "white": 1.5,
+                "light bullet": .2}
 
 def main():
     FPS: int = 70
@@ -69,7 +70,7 @@ def main():
     # inimigos.criar("roundguy", (400, 0), game_screen.shape, 0.5, 1, IMG_ASSETS)
     inimigos.criarSwarm(
         inimigos.EnumFormations.V, 3, "roundguy", [250, 0], 20, game_screen.shape,
-        2, 0.1, IMG_ASSETS, SCALE_ASSETS, mov_strategy=mm.Mov_ZigZag()
+        2, 0.1, IMG_ASSETS, SCALE_ASSETS, bullettype = ColorEnum.Light , mov_strategy=mm.Mov_ZigZag()
     )
     # inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
     # inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
@@ -135,7 +136,9 @@ def main():
         player.walk(key, game_screen, dt)
         if key[pygame.K_SPACE]:
             player.shoot(player_bullets, IMG_ASSETS, game_screen)
-
+        if key[pygame.K_e]:
+            player.ChangeColor()
+            
         # Enemies
         DeathCount, PassingCount = inimigos.mover(game_screen, dt)
         player.scoreUpdate(DeathCount, PassingCount)

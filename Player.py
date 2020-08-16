@@ -155,9 +155,9 @@ class Player(Entity):
                 if self.coordinates[0] + u < window.width - self.width:
                     # Moving
                     self.coordinates[0] += u
-                    if self.isplayer:
-                        for a in self.Assistents:
-                            a.coordinates[0] += u
+                    # if self.isplayer:
+                    #     for a in self.Assistents:
+                    #         a.coordinates[0] += u 
                 else:
                     # Hugging right
                     self.coordinates[0] = window.width - self.width
@@ -173,9 +173,9 @@ class Player(Entity):
                 if self.coordinates[1] + v < self.healthbar.y - self.height:
                     # Moving
                     self.coordinates[1] += v
-                    if self.isplayer:
-                        for a in self.Assistents:
-                            a.coordinates[1] += v
+                    # if self.isplayer:
+                    #     for a in self.Assistents:
+                    #         a.coordinates[1] += v 
                 else:
                     # Hugging lower border
                     self.coordinates[1] = self.healthbar.y - self.height
@@ -183,7 +183,17 @@ class Player(Entity):
             else:
                 # Hugging upper border
                 self.coordinates[1] = 0
-        
+
+        if self.isplayer:
+            for x in range(len(self.Assistents)):
+                if x == 0:
+                    self.Assistents[x].coordinates[0] = self.coordinates[0] + self.width + 30
+                    self.Assistents[x].coordinates[1] = self.coordinates[1]
+                if x == 1:
+                    self.Assistents[x].coordinates[0] = self.coordinates[0] - self.width - 10 
+                    self.Assistents[x].coordinates[1] = self.coordinates[1]
+            
+                
 
     @property
     def hitbox(self):

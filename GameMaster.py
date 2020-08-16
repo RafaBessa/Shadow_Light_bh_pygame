@@ -31,6 +31,8 @@ class GameMaster:
         self.quant = [2]
         self.Bkeys = ["roundguy", "zag"]
         self.Wkeys = ["white"]
+        self.boss_Bkeys = ["roundguy B"]
+        self.boss_Wkeys = ["white B"]
         # self.cooldowns = [0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.]
         self.cooldowns = np.arange(0.5, 1.5, 0.05)
 
@@ -122,11 +124,11 @@ class GameMaster:
                 mov = random.choice(self.boss_movs)
                 startcoordinates = [random.randrange(0, shape[0]), random.choice(self.bossY)]
                 if color == ColorEnum.Light:
-                    key = random.choice(self.Wkeys)
+                    key = random.choice(self.boss_Wkeys)
                 else:
-                    key = random.choice(self.Bkeys)
+                    key = random.choice(self.boss_Bkeys)
                 space = 40
-                speed = random.choice(np.arange(0.1, 0.5, 0.01))
+                speed = random.choice(np.arange(0.1, 0.4, 0.01))
                 acceleration = 0.1
                 cd = random.choice(self.cooldowns)
                 cd = random.triangular(cd - 0.1, cd, cd + 0.1)

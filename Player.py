@@ -132,7 +132,7 @@ class Player(Entity):
         self.speed = self._speed * self.img.get_width()
         if self.isplayer:
             for a in self.Assistents:
-                a.resize( window)
+                a.resize(window)
 
 
     def move(self, key, window, dt):
@@ -223,7 +223,7 @@ class Player(Entity):
         if self.isplayer:
             for a in self.Assistents:
                 a.shoot(bullets, IMG_ASSETS, game_screen)
-            #AudioCaller.playAudio("laser1")
+            # AudioCaller.playAudio("ow")
         
 
     def scoreUpdate(self, DeathCount, PassingCount):

@@ -19,7 +19,7 @@ class Entity:
 
     @property
     def hitbox(self):
-        self
+        return self
 
     @property
     def width(self):

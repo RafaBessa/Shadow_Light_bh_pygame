@@ -31,4 +31,6 @@ class Mov_ZigZag(AbstractMoviment):
         else:
             self.direct = not self.direct
 
+        if(coordinates[0] < 0):
+            coordinates[0] = 0
         return coordinates, speed, acceleration

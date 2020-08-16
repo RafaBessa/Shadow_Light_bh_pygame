@@ -27,11 +27,12 @@ class Player(Entity):
 
         self._speed = speed  # in widths per second
         self.speed = speed * self.img.get_width()
-
         self.bullet_type = [bullet_key]
+        self._startbullet_speed = [bullet_speed]
         self.bullet_speed = [bullet_speed]
 
         self.cooldown = .1
+        self._startcooldown = .1
         self.timer = self.cooldown + 1
         self.score = 0
         self.killStreak = 0
@@ -68,6 +69,9 @@ class Player(Entity):
             self.health -= dmg
             self.healthbar.hit(dmg)
             self.killStreak = 0
+            self.cooldown = self._startcooldown
+            self.speed = self._speed * self.img.get_width()
+            self.bullet_speed[0] = self._startbullet_speed[0]
 
     def resize(self, window):
         super().resize(window)
@@ -132,6 +136,7 @@ class Player(Entity):
             self.timer = time()
 
     def scoreUpdate(self, DeathCount, PassingCount):
+        print(str(self.speed))
         now = time()
         if now - self.score_time > 5:
             self.killStreak = 0
@@ -141,7 +146,12 @@ class Player(Entity):
         _streakValue = 10
         # if PassingCount > 0:
         #     self.killStreak = 0
-
+        if DeathCount>=1:
+       #     print(str(self.bullet_speed) + " , " +  str(self.cooldown))
+            self.bullet_speed[0] *= 1.10
+            self.cooldown *= 1.15
+            self.speed *= 1.06
+            #print(str(self.speed))
         upgradetype = math.floor(self.killStreak / _streakValue)
         if upgradetype >= len(self._ShootType):
             upgradetype = len(self._ShootType) - 1

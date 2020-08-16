@@ -46,7 +46,7 @@ class Inimigos:
 
         img_dim = (IMG_ASSETS[key].get_width(), IMG_ASSETS[key].get_height())  # pega a dimensão do asset
         scale = SCALE_ASSETS[key]
-
+       
         cord = self.__coordenadaTipo(type, quant, space, startcoordinates, dimension, img_dim, scale)
 
         for c in cord:
@@ -61,10 +61,11 @@ class Inimigos:
         scaleDim = (round(img_dim[0] * scale), round(img_dim[1] * scale))
         if type == self.EnumFormations.LINE:
             x, y = startcoordinates
+      
             for i in range(0, quant):
                 cord.append([x, y])
                 x += space + scaleDim[0]
-                if (x + scaleDim[0]) >= screen_dim[0]:
+                if (x + scaleDim[0]) >= screen_dim[0]  :
                     break
 
         if type == self.EnumFormations.V:

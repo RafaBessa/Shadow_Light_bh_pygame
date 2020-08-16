@@ -8,15 +8,15 @@ class GameMaster:
         self.lvl = 0
         self.movs = [mm.Mov_LinearFall(), mm.Mov_ZigZag()]
         self.quant = [2]
-        self.keys = ["roundguy"]
+        self.keys = ["roundguy", "white", "zag"]
         self.ASSETS = IMG_ASSETS
         self.SCALE = SCALE_ASSETS
         self.speed = 2
         self.acceleration = .1
 
-    def detect_state(self, inimigos, game_screen):
+    def detect_state(self, inimigos, shape):
         if len(inimigos.INIMIGOS) == 0:
-            self.next_level(inimigos, game_screen)
+            self.next_level(inimigos, shape)
             return inimigos
         else:
             return inimigos
@@ -35,7 +35,7 @@ class GameMaster:
         key = random.choice(self.keys)
         quant = random.choice(self.quant)
         mov = random.choice(self.movs)
-        startcoordinates = [250, 0]
+        startcoordinates = [random.randrange(0, shape[0]), random.randrange(-round(shape[1]*self.lvl/2), 0)]
         space = 40
         speed = random.triangular(self.speed - 1, self.speed, self.speed + 1)
         acceleration = self.acceleration

@@ -87,12 +87,12 @@ class Player(Entity):
             # Checking upper border
             if self.coordinates[1] + v > 0:
                 # Checking lower border
-                if self.coordinates[1] + v < window.height - self.height:
+                if self.coordinates[1] + v < self.healthbar.y - self.height:
                     # Moving
                     self.coordinates[1] += v
                 else:
                     # Hugging lower border
-                    self.coordinates[1] = window.height - self.height
+                    self.coordinates[1] = self.healthbar.y - self.height
             else:
                 # Hugging upper border
                 self.coordinates[1] = 0
@@ -110,7 +110,7 @@ class Player(Entity):
         now = time()
         if now - self.timer > self.cooldown:
             self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.bullet_type,
-                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions)
+                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions, False)
 
             self.timer = time()
 

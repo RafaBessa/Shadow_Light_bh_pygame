@@ -26,15 +26,19 @@ IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
               "roundguy": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "roundguy.png")), 180),
               "red bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "red bullet.png")), 180),
               "healthbar": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180),
+              "white": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "white.png")), 180),
               "dark bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180),
-              "light bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180)}
+              "light bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180),
+              "zag": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "zag.png")), 180)}
 
 SCALE_ASSETS = {"ship1": .2,
                 "roundguy": .2,
                 "red bullet": .2,
                 "healthbar": 3,
                 "dark bullet": .2,
-                "rlight bullet": .2}
+                "rlight bullet": .2,
+                "zag": .2,
+                "white": 1.5}
 
 def main():
     FPS: int = 70
@@ -146,7 +150,7 @@ def main():
 
         # New game state
        # inimigos = GM.detect_state(inimigos, (BG_W, BG_H))
-        inimigos = GM.detect_state(inimigos, game_screen.shape)
+        GM.detect_state(inimigos, game_screen.shape)
         inimigos.resize(game_screen)
     pygame.quit()
 

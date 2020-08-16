@@ -8,7 +8,9 @@ class GameMaster:
         self.lvl = 0
         self.movs = [mm.Mov_LinearFall(), mm.Mov_ZigZag()]
         self.quant = [2]
-        self.keys = ["roundguy", "white", "zag"]
+        self.Bkeys = ["roundguy", "zag"]
+        self.Wkeys = ["white"]
+        self.cooldowns = [0.1,0.2,0.3,0.4,0.5]
         self.colors = [ColorEnum.Light,ColorEnum.Shadow]
         self.ASSETS = IMG_ASSETS
         self.SCALE = SCALE_ASSETS
@@ -33,15 +35,20 @@ class GameMaster:
 
     def more(self, inimigos, shape):
         formation = random.choice([inimigos.EnumFormations.V, inimigos.EnumFormations.LINE])
-        key = random.choice(self.keys)
+        #key = random.choice(self.keys)
         quant = random.choice(self.quant)
         mov = random.choice(self.movs)
         startcoordinates = [random.randrange(0, shape[0]), random.randrange(-round(shape[1]*self.lvl/2), 0)]
         color = random.choice(self.colors)
+        if color == ColorEnum.Light:
+            key = random.choice(self.Wkeys)
+        else:
+            key = random.choice(self.Bkeys)
         space = 40
         speed = random.triangular(self.speed - 1, self.speed, self.speed + 1)
         acceleration = self.acceleration
-
+        cd = random.choice(self.cooldowns)
+        cd = random.triangular(cd-0.1,cd,cd+0.1)
         inimigos.criarSwarm(formation, quant, key, startcoordinates, space, shape, speed,
                             acceleration, self.ASSETS, self.SCALE, color, mov)
 

@@ -29,11 +29,10 @@ class Bullets:
             i.draw(window)
 
     def hit(self, objs):
-
         for bullet in self.bullets:
             for obj in objs:
                 if collide(bullet, obj.hitbox):
-                    obj.hit(bullet.dmg)
+                    obj.hit(bullet.dmg, bullet.type)
                     if bullet in self.bullets:
                         self.bullets.remove(bullet)
 

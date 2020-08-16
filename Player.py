@@ -90,10 +90,11 @@ class Player(Entity):
 
         self.healthbar.draw(window)
 
-    def hit(self, dmg):
-        self.health -= dmg
-        self.healthbar.hit(dmg)
-        self.killStreak = 0
+    def hit(self, dmg, bullet_type):
+        if not (bullet_type == self.color):
+            self.health -= dmg
+            self.healthbar.hit(dmg)
+            self.killStreak = 0
 
     def resize(self, window):
         super().resize(window)
@@ -173,8 +174,8 @@ class Player(Entity):
         self.score += DeathCount
         self.killStreak += DeathCount
         _streakValue = 10
-        if PassingCount > 0:
-            self.killStreak = 0
+        # if PassingCount > 0:
+        #     self.killStreak = 0
 
         upgradetype = math.floor(self.killStreak / _streakValue)
         if upgradetype >= len(self._ShootType):

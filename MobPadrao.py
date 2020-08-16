@@ -5,12 +5,13 @@ from copy import copy
 import Entity
 import MovimentoMob as mm
 import MovimentoBala as mb
-
+import pygame
 class MobPadrao(Entity.Entity):
     def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, movStategy, cooldown, life = 1):
 
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
         self.health = life
+        self._starthealth = copy(life)
         self.bulletType = bulletType
         self._speed = speed  # in heights per second
         self.speed = speed * self.img.get_height() #px/s
@@ -54,6 +55,10 @@ class MobPadrao(Entity.Entity):
             self.timer = time()
 
     def draw(self, window):
-        cimg = copy(self.img)
+        
         # cimg = cimg.fill((0, 100, 200))
-        window.draw(cimg, self.coordinates)
+        window.draw(self.img, self.coordinates)
+        if self._starthealth > 1:
+            percent = self.health / self._starthealth
+            pygame.draw.rect(window._screen, (255,0,0), (self.coordinates[0], self.coordinates[1] - 10, 50, 5)) # NEW
+            pygame.draw.rect(window._screen, (0,128,0), (self.coordinates[0], self.coordinates[1] - 10, round(50 * percent) , 5)) # NEW

@@ -13,7 +13,7 @@ class Inimigos:
 
     def criar(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, mov_strat=mm.Mov_LinearFall()):
         self.INIMIGOS.append(MobPadrao(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, mov_strat))
-
+        
     def mover(self, game_screen, dt):
         killNumbers = 0
         PassingNumber = 0

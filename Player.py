@@ -239,11 +239,18 @@ class Player(Entity):
         #     self.killStreak = 0
         if DeathCount >= 1:
             #     print(str(self.bullet_speed) + " , " +  str(self.cooldown))
-            self.bullet_speed *= 1.10
             self.cooldown *= .95
-            self.speed *= 1.06
+            if self.bullet_speed < -200:
+                self.bullet_speed = -200
+            else:
+                self.bullet_speed *= 1.10
+            if self.speed*1.06 > 700:
+                self.speed = 700
+            else:
+                self.speed *= 1.06
             #self.CreateAssistente()
             # print(str(self.speed))
+            
         upgradetype = math.floor(self.killStreak / _streakValue)
         if upgradetype >= len(self._ShootType):
             upgradetype = len(self._ShootType) - 1

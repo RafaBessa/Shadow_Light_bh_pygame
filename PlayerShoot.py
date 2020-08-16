@@ -2,6 +2,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 import MovimentoBala as mb
 
+
+
 class AbstractShoot(ABC):
     @abstractmethod
     def Shoot(self, bullets, IMG_ASSETS, game_screen, bullet_type) -> None:

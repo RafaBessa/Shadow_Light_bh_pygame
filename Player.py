@@ -171,7 +171,6 @@ class Player(Entity):
             self.timer = time()
 
     def scoreUpdate(self, DeathCount, PassingCount):
-        print(str(self.speed))
         now = time()
         if now - self.score_time > 5:
             self.killStreak = 0

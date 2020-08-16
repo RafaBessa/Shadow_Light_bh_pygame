@@ -9,7 +9,7 @@ class AbstractMoviment(ABC):
 
 
 class Mov_LinearFall(AbstractMoviment):
-    def move(self, coordinates, speed, acceleration, lastcoordinate, dt):
+    def move(self, coordinates, speed, acceleration, lastcoordinate,screen, dt ):
         speed += acceleration * dt
         coordinates[1] = round(coordinates[1] + speed * dt)
         return coordinates, speed, acceleration
@@ -17,7 +17,7 @@ class Mov_LinearFall(AbstractMoviment):
 
 class Mov_ZigZag(AbstractMoviment):
     direct = True
-    def move(self, coordinates, speed, acceleration, startcoordinate, dt):
+    def move(self, coordinates, speed, acceleration, startcoordinate,screen, dt ):
         ZigZageamento = 100 #variacao max da nave
         coordinates[1] = round(coordinates[1] + speed * dt)
 
@@ -34,3 +34,46 @@ class Mov_ZigZag(AbstractMoviment):
         if(coordinates[0] < 0):
             coordinates[0] = 0
         return coordinates, speed, acceleration
+
+
+class Mov_HorizontalBossLeft(AbstractMoviment):
+    direct = True
+    def move(self, coordinates, speed, acceleration, lastcoordinate,screen, dt):
+        speed += acceleration * dt
+        Maxx, Maxy = screen
+        if self.direct:
+            if(coordinates[0] + speed ) >= Maxx:
+                self.direct = False
+            else:
+                coordinates[0] = round(coordinates[0] + speed)
+            
+        else:
+            if(coordinates[0] - speed ) <= 0:
+                self.direct = True
+            else:
+                coordinates[0] = round(coordinates[0] - speed)
+
+        return coordinates, speed, acceleration
+
+class Mov_HorizontalBossRight(AbstractMoviment):
+    direct = False
+    def move(self, coordinates, speed, acceleration, lastcoordinate, screen, dt):
+        
+        speed += acceleration * dt
+        Maxx, Maxy = screen
+        if self.direct:
+            if(coordinates[0] + speed ) >= Maxx:
+                self.direct = False
+            else:
+                coordinates[0] = round(coordinates[0] + speed)
+            
+        else:
+            if(coordinates[0] - speed ) <= 0:
+                self.direct = True
+            else:
+                coordinates[0] = round(coordinates[0] - speed)
+            
+
+        return coordinates, speed, acceleration
+        
+        

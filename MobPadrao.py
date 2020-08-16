@@ -7,19 +7,17 @@ import MovimentoMob as mm
 import MovimentoBala as mb
 
 class MobPadrao(Entity.Entity):
-    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, movStategy, cooldown=0.5):
+    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, movStategy, cooldown, life = 1):
 
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
-        self.health = 1
+        self.health = life
         self.bulletType = bulletType
         self._speed = speed  # in heights per second
         self.speed = speed * self.img.get_height() #px/s
-
         self._acceleration = acceleration  # in heights per second squared
         self.acceleration = acceleration * self.img.get_height()
         self._movStrategy = movStategy
         self._startcoordinate = coordinates
-
         self.cooldown = cooldown
         self.timer = self.cooldown + 1
 
@@ -37,8 +35,8 @@ class MobPadrao(Entity.Entity):
         self._movStrategy = mover
 
     def movimentar(self, dt):
-        self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
-
+        self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, self._dimensions, dt)
+                                                                                
     def hit(self, dmg, bulletType):
         if not (bulletType == self.bulletType):
             self.health -= dmg
@@ -48,6 +46,7 @@ class MobPadrao(Entity.Entity):
         bullet = 'red bullet'
         now = time()
         r = random()
+      
         if now - self.timer > self.cooldown and random() > .3:
             bullets.fire(bullet, [self.x + round(self.width / 2), self.y + round(0.8 * self.height)], self._dimensions,
                              IMG_ASSETS, (bullet_speed + round(0.1*self.speed)), game_screen, self.bulletType, mb.Mov_LinearFall())

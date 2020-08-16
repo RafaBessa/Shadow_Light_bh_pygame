@@ -2,7 +2,7 @@ import pygame
 import MovimentoMob as mm
 import random
 from ColorEnum import ColorEnum
-
+import numpy as np
 class GameMaster:
     def __init__(self, IMG_ASSETS, SCALE_ASSETS):
         self.lvl = 0
@@ -10,7 +10,8 @@ class GameMaster:
         self.quant = [2]
         self.Bkeys = ["roundguy", "zag"]
         self.Wkeys = ["white"]
-        self.cooldowns = [0.1,0.2,0.3,0.4,0.5]
+        #self.cooldowns = [0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.]
+        self.cooldowns = np.arange(0.2,0.8,0.05)
         self.colors = [ColorEnum.Light,ColorEnum.Shadow]
         self.ASSETS = IMG_ASSETS
         self.SCALE = SCALE_ASSETS

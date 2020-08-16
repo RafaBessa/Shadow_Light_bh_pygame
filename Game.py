@@ -80,7 +80,7 @@ def main():
 
     # Player
     player_fire_key = "red bullet"
-    player_bullet_speed = -10
+    player_bullet_speed = -10.0
     player_speed = 12
     player = Player("ship1", [500, 460], game_screen.shape, player_speed, IMG_ASSETS,
                     player_fire_key, player_bullet_speed)
@@ -91,10 +91,10 @@ def main():
     # Enemies
     inimigos = Inimigos()
     # inimigos.criar("roundguy", (400, 0), game_screen.shape, 0.5, 1, IMG_ASSETS)
-    inimigos.criarSwarm(
-        inimigos.EnumFormations.V, 3, "roundguy", [250, 0], 20, game_screen.shape,
-        2, 0.1, IMG_ASSETS, SCALE_ASSETS, bullettype = ColorEnum.Light , mov_strategy=mm.Mov_ZigZag()
-    )
+    # inimigos.criarSwarm(
+    #     inimigos.EnumFormations.V, 3, "roundguy", [250, 0], 20, game_screen.shape,
+    #     2, 0.1, IMG_ASSETS, SCALE_ASSETS, bullettype = ColorEnum.Light , mov_strategy=mm.Mov_ZigZag()
+    # )
 
     # Bullets
     player_bullets = Bullets([], IMG_ASSETS)

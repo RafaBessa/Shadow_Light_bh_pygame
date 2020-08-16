@@ -19,11 +19,37 @@ class Player(Entity):
         def hit(self, dmg):
             self.coordinates[0] -= round(self.width * dmg / self.max_health)
 
+    class Hitbox(Entity):
+        def __init__(self, coordinates, dimensions, IMG_ASSETS):
+            self.key_light = "hit light"
+            self.key_dark = "hit dark"
+            self.color = ColorEnum.Light
+            super().__init__(self.key_light, coordinates, dimensions, IMG_ASSETS)
+
+        def ChangeColor(self):
+            if self.color == ColorEnum.Light:
+                self.img_key = self.key_dark
+                self.color = ColorEnum.Shadow
+            else:
+                self.img_key = self.key_light
+                self.color = ColorEnum.Light
+
+        def draw_at(self, window, coordinates):
+            self.coordinates = coordinates
+            self.resize(window)
+            super().draw(window)
+
+
+
     def __init__(self, key, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed):
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
 
         self.health = 10
         self.healthbar = self.Healthbar(dimensions, IMG_ASSETS, self.health)
+
+        self._hitbox = self.Hitbox(coordinates, dimensions, IMG_ASSETS)
+
+        self.high_precision = False
 
         self._speed = speed  # in widths per second
         self.speed = speed * self.img.get_width()
@@ -44,15 +70,16 @@ class Player(Entity):
         if (time() - self.colorDelay) < 0.15:
             return
         self.colorDelay = time()
+        self._hitbox.ChangeColor()
         if self.color == ColorEnum.Light:
             self.color = ColorEnum.Shadow
         else:
             self.color = ColorEnum.Light
 
     def draw(self, window):
-
         super().draw(window)
-
+        if self.high_precision:
+            self._hitbox.draw_at(window, self.coordinates)
         pygame.font.init()
         font = pygame.font.SysFont("Comic Sans", 30)
         lost_font_rgb = (231, 88, 152)
@@ -76,9 +103,10 @@ class Player(Entity):
     def resize(self, window):
         super().resize(window)
         self.healthbar.resize(window)
+        self._hitbox.resize(window)
         self.speed = self._speed * self.img.get_width()
 
-    def move(self, key, window, dt, high_precision):
+    def move(self, key, window, dt):
         u = (key[pygame.K_d] - key[pygame.K_a])
         v = (key[pygame.K_s] - key[pygame.K_w])
         modulus = (u ** 2 + v ** 2) ** .5
@@ -87,7 +115,7 @@ class Player(Entity):
         if modulus > 0:
             # making linear velocity equal to player velocity
             modulus = self.speed * dt / modulus
-            if high_precision:
+            if self.high_precision:
                 modulus = 0.6 * modulus
 
             u = round(u * modulus)
@@ -119,6 +147,13 @@ class Player(Entity):
                 self.coordinates[1] = 0
 
     @property
+    def hitbox(self):
+        if self.high_precision:
+            return self._hitbox
+        else:
+            return self
+
+    @property
     def shoot_strg(self) -> PS.AbstractShoot:
         return self.shootStrategy
 
@@ -126,12 +161,12 @@ class Player(Entity):
     def shoot_strg(self, atirar: PS.AbstractShoot) -> None:
         self.shootStrategy = self.shoot_met
 
-    def shoot(self, bullets, IMG_ASSETS, game_screen, high_precision):
+    def shoot(self, bullets, IMG_ASSETS, game_screen):
         # self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
         now = time()
         if now - self.timer > self.cooldown:
             self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.color,
-                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions, high_precision)
+                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions, self.high_precision)
 
             self.timer = time()
 

@@ -33,7 +33,9 @@ IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
               "white": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "white.png")), 180),
               "dark bullet": pygame.image.load(os.path.join("assets", "dark bullet.png")),
               "light bullet": pygame.image.load(os.path.join("assets", "light bullet.png")),
-              "zag": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "zag.png")), 180)}
+              "zag": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "zag.png")), 180),
+              "hit light": pygame.image.load(os.path.join("assets", "hit light.png")),
+              "hit dark": pygame.image.load(os.path.join("assets", "hit dark.png"))}
 
 SCALE_ASSETS = {"ship1": .2,
                 "roundguy": .2,
@@ -43,7 +45,9 @@ SCALE_ASSETS = {"ship1": .2,
                 "rlight bullet": .2,
                 "zag": .2,
                 "white": 1.5,
-                "light bullet": .2}
+                "light bullet": .2,
+                "hit light": .2,
+                "hit dark": .2}
 
 def RIP_framerate(framerate):
     s = 0
@@ -152,14 +156,14 @@ def main():
 
         # AFTER CHANGING THE SCREEN
         # Player
-        high_precision = False
+        player.high_precision = False
         if key[pygame.K_LSHIFT]:
-            high_precision = True
+            player.high_precision = True
 
-        player.move(key, game_screen, dt, high_precision)
+        player.move(key, game_screen, dt)
 
         if key[pygame.K_SPACE]:
-            player.shoot(player_bullets, IMG_ASSETS, game_screen, high_precision)
+            player.shoot(player_bullets, IMG_ASSETS, game_screen)
         if key[pygame.K_e]:
             player.ChangeColor()
         if key[pygame.K_e]:

@@ -18,6 +18,10 @@ class Entity:
         window.draw(self.img, self.coordinates)
 
     @property
+    def hitbox(self):
+        return self
+
+    @property
     def width(self):
         return self.img.get_width()
 

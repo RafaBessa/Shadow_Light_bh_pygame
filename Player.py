@@ -144,5 +144,5 @@ class Player(Entity):
         upgradetype = math.floor(self.killStreak / _streakValue)
         if upgradetype >= len(self._ShootType):
             upgradetype = len(self._ShootType) - 1
-            
+
         self.shootStrategy = self._ShootType[upgradetype]

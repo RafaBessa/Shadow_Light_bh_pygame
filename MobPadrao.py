@@ -1,7 +1,7 @@
 from time import time
 
 from random import random
-
+from copy import copy
 import Entity
 import MovimentoMob as mm
 import MovimentoBala as mb
@@ -38,6 +38,7 @@ class MobPadrao(Entity.Entity):
         self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, self._dimensions, dt)
                                                                                 
     def hit(self, dmg, bulletType):
+        
         if not (bulletType == self.bulletType):
             self.health -= dmg
 
@@ -51,3 +52,8 @@ class MobPadrao(Entity.Entity):
             bullets.fire(bullet, [self.x + round(self.width / 2), self.y + round(0.8 * self.height)], self._dimensions,
                              IMG_ASSETS, (bullet_speed + round(0.1*self.speed)), game_screen, self.bulletType, mb.Mov_LinearFall())
             self.timer = time()
+
+    def draw(self, window):
+        cimg = copy(self.img)
+        # cimg = cimg.fill((0, 100, 200))
+        window.draw(cimg, self.coordinates)

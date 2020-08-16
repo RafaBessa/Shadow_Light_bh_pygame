@@ -41,8 +41,11 @@ class Player(Entity):
 
 
 
-    def __init__(self, key, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed):
-        super().__init__(key, coordinates, dimensions, IMG_ASSETS)
+    def __init__(self, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed):
+        self.key_light = "ship light"
+        self.key_dark = "ship dark"
+
+        super().__init__(self.key_light, coordinates, dimensions, IMG_ASSETS)
 
         self.health = 10
         self.healthbar = self.Healthbar(dimensions, IMG_ASSETS, self.health)
@@ -66,15 +69,18 @@ class Player(Entity):
         self.color = ColorEnum.Light
         self.colorDelay = 0
 
-    def ChangeColor(self):
+    def ChangeColor(self, window):
         if (time() - self.colorDelay) < 0.15:
             return
         self.colorDelay = time()
         self._hitbox.ChangeColor()
         if self.color == ColorEnum.Light:
             self.color = ColorEnum.Shadow
+            self.img_key = self.key_dark
         else:
             self.color = ColorEnum.Light
+            self.img_key = self.key_light
+        self.resize(window)
 
     def draw(self, window):
         super().draw(window)

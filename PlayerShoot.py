@@ -52,3 +52,15 @@ class Shoot_Triple(AbstractShoot):
             bullets.fire(bullet, [x + round(width * 0.7), y], dimensions,
                             IMG_ASSETS, bullet_speed, game_screen, bullet_type,  mb.Mov_DiagRight(.17))
         self.center_shoot(bullets, IMG_ASSETS, game_screen, bullet_type, x, y, width, bullet_speed, dimensions, high_precision)
+
+class Shoot_Spread_Triple(AbstractShoot):
+    center_shoot = Shoot_Basic.Shoot
+    def Shoot(self,  bullets, IMG_ASSETS, game_screen, bullet_type, x, y, width, bullet_speed, dimensions, high_precision):
+        bullet = str(bullet_type)
+        bullets.fire(bullet, [x + round(width * 0.1), y], dimensions,
+                        IMG_ASSETS, bullet_speed, game_screen, bullet_type,  mb.Mov_DiagLeft(.7))
+
+        bullets.fire(bullet, [x + round(width * 0.7), y], dimensions,
+                        IMG_ASSETS, bullet_speed, game_screen, bullet_type,  mb.Mov_DiagRight(.7))
+
+        self.center_shoot(bullets, IMG_ASSETS, game_screen, bullet_type, x, y, width, bullet_speed, dimensions, False)

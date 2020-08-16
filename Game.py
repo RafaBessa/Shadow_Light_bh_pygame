@@ -38,8 +38,10 @@ IMG_ASSETS = {"ship dark": pygame.image.load(os.path.join("assets", "ship1.png")
               "hit light": pygame.image.load(os.path.join("assets", "hit light.png")),
               "hit dark": pygame.image.load(os.path.join("assets", "hit dark.png")),
               "asst dark": pygame.image.load(os.path.join("assets", "asst1.png")),
-              "asst light": pygame.image.load(os.path.join("assets", "asst2.png"))
-              }
+              "asst light": pygame.image.load(os.path.join("assets", "asst2.png")),
+              "bbeg center": pygame.image.load(os.path.join("assets", "bbeg center.png")),
+              "blue right": pygame.image.load(os.path.join("assets", "blue right.png")),
+              "white left": pygame.image.load(os.path.join("assets", "white left.png"))}
 
 SCALE_ASSETS = {"ship dark": .2,
                 "ship light": .2,
@@ -55,8 +57,9 @@ SCALE_ASSETS = {"ship dark": .2,
                 "hit dark": .2,
                 "asst dark": .1,
                 "asst light": .1,
-                
-                }
+                "bbeg center": 1,
+                "blue right": 0.4365079365079365,
+                "white left": 0.4296875}
 
 
 def RIP_framerate(framerate):
@@ -92,7 +95,7 @@ def main():
 
     # Player
     player_fire_key = "red bullet"
-    player_bullet_speed = -10.0
+    player_bullet_speed = -20.0
     player_speed = 12
     player = Player([500, 460], game_screen.shape, player_speed, IMG_ASSETS,
                     player_fire_key, player_bullet_speed,window=game_screen)
@@ -169,9 +172,7 @@ def main():
 
         # AFTER CHANGING THE SCREEN
         # Player
-        player.high_precision = False
-        if key[pygame.K_LSHIFT]:
-            player.high_precision = True
+        player.high_precision = key[pygame.K_LSHIFT]
 
         player.move(key, game_screen, dt)
 
@@ -197,7 +198,7 @@ def main():
         inimigos.resize(game_screen)
 
     print(player.score)
-    # RIP_framerate(framerate)
+    #RIP_framerate(framerate)
 
     pygame.quit()
 

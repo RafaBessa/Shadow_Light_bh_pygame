@@ -75,5 +75,23 @@ class Mov_HorizontalBossRight(AbstractMoviment):
             
 
         return coordinates, speed, acceleration, direction
-        
-        
+
+
+class Mov_HorizontalAglom(AbstractMoviment):
+
+    def move(self, coordinates, speed, acceleration, startcoordinate, screen, direction, dt):
+        ZigZageamento = 100  # variacao max da nave
+
+        if (startcoordinate[0] + ZigZageamento >= coordinates[0]) and (
+        direction):  # se ele tava na esquerda vai pra direita
+            coordinates[0] = round(coordinates[0] + speed * dt)
+
+        elif (startcoordinate[0] - ZigZageamento <= coordinates[0]) and (not direction):
+            coordinates[0] = round(coordinates[0] - speed * dt)
+
+        else:
+            direction = not direction
+
+        if (coordinates[0] < 0):
+            coordinates[0] = 0
+        return coordinates, speed, acceleration, direction

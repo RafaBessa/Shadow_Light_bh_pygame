@@ -91,5 +91,5 @@ class MobPadrao(Entity.Entity):
         window.draw(self.img, self.coordinates)
         if self._starthealth > 1:
             percent = self.health / self._starthealth
-            pygame.draw.rect(window._screen, (255,0,0), (self.coordinates[0], self.coordinates[1] - 10, 50, 5)) # NEW
-            pygame.draw.rect(window._screen, (0,128,0), (self.coordinates[0], self.coordinates[1] - 10, round(50 * percent) , 5)) # NEW
+            pygame.draw.rect(window._screen, (255,0,0), (self.coordinates[0] + round(self.width/2), self.coordinates[1] - 10, 50, 5)) # NEW
+            pygame.draw.rect(window._screen, (0,128,0), (self.coordinates[0] + round(self.width/2), self.coordinates[1] - 10, round(50 * percent) , 5)) # NEW

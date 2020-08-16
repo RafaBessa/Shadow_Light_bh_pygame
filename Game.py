@@ -141,7 +141,7 @@ def main():
         if player.health <= 0:
             lost = True
             lost_time += dt
-            if lost_time > 2:
+            if lost_time > 10:
                 run = False
             else:
                 continue

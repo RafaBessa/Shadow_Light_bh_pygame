@@ -1,4 +1,5 @@
 from copy import copy
+from math import exp, log
 
 import pygame
 import MovimentoMob as mm
@@ -40,10 +41,11 @@ class GameMaster:
 
         self.colors = [ColorEnum.Light, ColorEnum.Shadow]
 
-        self.ASSETS = IMG_ASSETS
-        self.SCALE = SCALE_ASSETS
         self.speed = 2
         self.acceleration = .1
+
+        self.ASSETS = IMG_ASSETS
+        self.SCALE = SCALE_ASSETS
         self.bossFreq = 5
         self.bosscount = 0
         self.bossY = [50, 100, 150, 200]
@@ -68,17 +70,22 @@ class GameMaster:
 
     def next_level(self, inimigos, shape):
         self.lvl += 1
+        self.quant = [i + 1 for i in self.quant]
+        self.speed = self.speed*1.1
 
         if self.ShootTypeProb["Basic"] > 0:
             for key in self.ShootTypeProb:
                 self.ShootTypeProb[key] -= self.LevelShootProbRearanger[key]
-        self.quant = [i + 1 for i in self.quant]
-        self.speed = self.speed * 1.1
+
         if (self.lvl % self.bossFreq) == 0:
             inimigos = self.spawboss(inimigos, shape)
         else:
             for i in range(self.lvl):
                 inimigos = self.more(inimigos, shape)
+
+        if 5 > self.lvl > 3 and random.random() > .5:
+            self.spawnAglomerate(inimigos, shape)
+
         return inimigos
 
     def more(self, inimigos, shape):
@@ -103,8 +110,6 @@ class GameMaster:
         inimigos.criarSwarm(formation, quant, key, startcoordinates, space, shape, speed,
                             acceleration, self.ASSETS, self.SCALE, color, mov, cd=cd,
                             shootStrategy=self.ShootType[wr.random()])
-        if True:
-            self.spawnAglomerate(inimigos, shape)
         return inimigos
 
     def spawboss(self, inimigos, shape):
@@ -133,24 +138,26 @@ class GameMaster:
         self.bosscount += 1
         formation = inimigos.EnumFormations.LINE
         key = random.choice(self.Multiple_keys)
-        startcoordinates = [shape[0]/2, 50]
+        startcoordinates = [shape[0] / 2, 50]
         speed = 1
         acceleration = 0
         color = random.choice(self.colors)
         mov = mm.Mov_HorizontalAglom()
-        life = 100
-        cd = random.choice(self.cooldowns)
-        cd = random.triangular(cd - 0.1, cd, cd + 0.1)
+        life = 50
+        cd = .4
 
-        inimigos.criar(self.Component_key[key][0], copy(startcoordinates), shape, speed, acceleration, self.ASSETS, ColorEnum.Light, mov_strat=mov,
-                       life=life, cd=cd/3, shootStrategy=PS.Shoot_Spread_Triple())
+        inimigos.criar(self.Component_key[key][0], copy(startcoordinates), shape, speed, acceleration, self.ASSETS,
+                       color, mov_strat=mov,
+                       life=life, cd=cd / 3, shootStrategy=PS.Shoot_Spread_Triple())
 
         startcoordinates[0] -= 58
-        inimigos.criar(self.Component_key[key][1], copy(startcoordinates), shape, speed, acceleration, self.ASSETS, color, mov_strat=mov,
+        inimigos.criar(self.Component_key[key][1], copy(startcoordinates), shape, speed, acceleration, self.ASSETS,
+                       ColorEnum.Light, mov_strat=mov,
                        life=life, cd=cd, shootStrategy=PS.Shoot_Spread_Triple())
 
         startcoordinates[0] += 220
-        inimigos.criar(self.Component_key[key][2], copy(startcoordinates), shape, speed, acceleration, self.ASSETS, ColorEnum.Shadow, mov_strat=mov,
+        inimigos.criar(self.Component_key[key][2], copy(startcoordinates), shape, speed, acceleration, self.ASSETS,
+                       ColorEnum.Shadow, mov_strat=mov,
                        life=life, cd=cd, shootStrategy=PS.Shoot_Spread_Triple())
 
         return inimigos

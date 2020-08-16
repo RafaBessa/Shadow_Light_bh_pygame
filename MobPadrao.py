@@ -7,7 +7,7 @@ import MovimentoMob as mm
 import MovimentoBala as mb
 
 class MobPadrao(Entity.Entity):
-    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, movStategy):
+    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, movStategy, cooldown=0.5):
 
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
         self.health = 1
@@ -20,7 +20,7 @@ class MobPadrao(Entity.Entity):
         self._movStrategy = movStategy
         self._startcoordinate = coordinates
 
-        self.cooldown = .5
+        self.cooldown = cooldown
         self.timer = self.cooldown + 1
 
     def resize(self, window):

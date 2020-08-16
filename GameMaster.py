@@ -9,6 +9,7 @@ class GameMaster:
         self.movs = [mm.Mov_LinearFall(), mm.Mov_ZigZag()]
         self.quant = [2]
         self.keys = ["roundguy", "white", "zag"]
+        self.cooldowns = [0.1,0.2,0.3,0.4,0.5]
         self.colors = [ColorEnum.Light,ColorEnum.Shadow]
         self.ASSETS = IMG_ASSETS
         self.SCALE = SCALE_ASSETS
@@ -41,7 +42,8 @@ class GameMaster:
         space = 40
         speed = random.triangular(self.speed - 1, self.speed, self.speed + 1)
         acceleration = self.acceleration
-
+        cd = random.choice(self.cooldowns)
+        cd = random.triangular(cd-0.1,cd,cd+0.1)
         inimigos.criarSwarm(formation, quant, key, startcoordinates, space, shape, speed,
                             acceleration, self.ASSETS, self.SCALE, color, mov)
 

@@ -32,7 +32,7 @@ class Bullets:
 
         for bullet in self.bullets:
             for obj in objs:
-                if collide(bullet, obj):
+                if collide(bullet, obj.hitbox):
                     obj.hit(bullet.dmg)
                     if bullet in self.bullets:
                         self.bullets.remove(bullet)

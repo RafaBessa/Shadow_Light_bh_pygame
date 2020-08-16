@@ -21,6 +21,7 @@ class MobPadrao(Entity.Entity):
         self._startcoordinate = coordinates
         self.cooldown = cooldown
         self.timer = self.cooldown + 1
+        self.direction = True
 
     def resize(self, window):
         super().resize(window)
@@ -36,7 +37,7 @@ class MobPadrao(Entity.Entity):
         self._movStrategy = mover
 
     def movimentar(self, dt):
-        self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, self._dimensions, dt)
+        self.coordinates, self.speed, self.acceleration, self.direction = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, self._dimensions, self.direction, dt)
                                                                                 
     def hit(self, dmg, bulletType):
         

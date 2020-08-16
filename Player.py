@@ -9,7 +9,7 @@ import AudioCaller
 
 class Player(Entity):
     _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double(), PS.Shoot_Triple()]
-
+    Assistents = []
     class Healthbar(Entity):
         def __init__(self, dimensions, IMG_ASSETS, max_health):
             self.max_health = max_health
@@ -40,32 +40,41 @@ class Player(Entity):
             self.resize(window)
             super().draw(window)
 
-    def __init__(self, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed):
-        self.key_light = "ship light"
-        self.key_dark = "ship dark"
-
-        super().__init__(self.key_light, coordinates, dimensions, IMG_ASSETS)
+    def __init__(self, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed, startcolor=ColorEnum.Light ,window=None,isplayer=True):
+        self.isplayer = isplayer
+        self.color = startcolor
+        if isplayer:
+            self.key_light = "ship light"
+            self.key_dark = "ship dark"
+        else:
+            self.key_light = "asst light"
+            self.key_dark = "asst dark"
+        if startcolor == ColorEnum.Light:
+            supkey = self.key_light
+        else:
+            supkey = self.key_dark
+        super().__init__(supkey, coordinates, dimensions, IMG_ASSETS)
 
         self.health = 10
         self.healthbar = self.Healthbar(dimensions, IMG_ASSETS, self.health)
-
+        self._window=window
         self._hitbox = self.Hitbox(coordinates, dimensions, IMG_ASSETS)
-
+        self._dim = dimensions
         self.high_precision = False
-
+        self._IMG_ASS = IMG_ASSETS
         self._speed = speed  # in widths per second
         self.speed = speed * self.img.get_width()
         self.bullet_type = [bullet_key]
         self._startbullet_speed = bullet_speed
         self.bullet_speed = bullet_speed
-
+        self.shootStrategy = PS.Shoot_Basic()
         self.cooldown = .1
         self._startcooldown = .1
         self.timer = self.cooldown + 1
         self.score = 0
         self.killStreak = 0
         self.score_time = 0
-        self.color = ColorEnum.Light
+        
         self.colorDelay = 0
 
     def ChangeColor(self, window):
@@ -80,6 +89,9 @@ class Player(Entity):
             self.color = ColorEnum.Light
             self.img_key = self.key_light
         self.resize(window)
+        
+        for a in self.Assistents:
+            a.ChangeColor(window)
 
     def draw(self, window):
         super().draw(window)
@@ -96,6 +108,14 @@ class Player(Entity):
 
         self.healthbar.draw(window)
 
+        for a in self.Assistents:
+            a.selfDraw(window)
+            
+
+    def selfDraw(self,window):
+        super().draw(window)
+
+
     def hit(self, dmg, bullet_type):
         if not (bullet_type == self.color):
             self.health -= dmg
@@ -110,6 +130,10 @@ class Player(Entity):
         self.healthbar.resize(window)
         self._hitbox.resize(window)
         self.speed = self._speed * self.img.get_width()
+        if self.isplayer:
+            for a in self.Assistents:
+                a.resize( window)
+
 
     def move(self, key, window, dt):
         u = (key[pygame.K_d] - key[pygame.K_a])
@@ -131,12 +155,17 @@ class Player(Entity):
                 if self.coordinates[0] + u < window.width - self.width:
                     # Moving
                     self.coordinates[0] += u
+                    if self.isplayer:
+                        for a in self.Assistents:
+                            a.coordinates[0] += u
                 else:
                     # Hugging right
                     self.coordinates[0] = window.width - self.width
+                   
             else:
                 # Hugging left
                 self.coordinates[0] = 0
+               
 
             # Checking upper border
             if self.coordinates[1] + v > 0:
@@ -144,12 +173,17 @@ class Player(Entity):
                 if self.coordinates[1] + v < self.healthbar.y - self.height:
                     # Moving
                     self.coordinates[1] += v
+                    if self.isplayer:
+                        for a in self.Assistents:
+                            a.coordinates[1] += v
                 else:
                     # Hugging lower border
                     self.coordinates[1] = self.healthbar.y - self.height
+                    
             else:
                 # Hugging upper border
                 self.coordinates[1] = 0
+        
 
     @property
     def hitbox(self):
@@ -176,7 +210,10 @@ class Player(Entity):
 
             self.timer = time()
 
-        #AudioCaller.playAudio("laser1")
+        if self.isplayer:
+            for a in self.Assistents:
+                a.shoot(bullets, IMG_ASSETS, game_screen)
+            #AudioCaller.playAudio("laser1")
         
 
     def scoreUpdate(self, DeathCount, PassingCount):
@@ -195,9 +232,25 @@ class Player(Entity):
             self.bullet_speed *= 1.10
             self.cooldown *= 1.15
             self.speed *= 1.06
+            #self.CreateAssistente()
             # print(str(self.speed))
         upgradetype = math.floor(self.killStreak / _streakValue)
         if upgradetype >= len(self._ShootType):
             upgradetype = len(self._ShootType) - 1
+            
 
         self.shootStrategy = self._ShootType[upgradetype]
+
+    def CreateAssistente(self):
+        if (len(self.Assistents) >= 2 ):
+            return
+        elif (len(self.Assistents) == 0):
+            cord = [self.coordinates[0] + self.width + 30 ,self.coordinates[1]]
+        else:
+            cord = [self.coordinates[0] - self.width - 10 ,self.coordinates[1]] 
+        
+        self.Assistents.append(Player(cord,self._dim, self.speed,self._IMG_ASS, "red bullet", self.bullet_speed, isplayer=False, startcolor=self.color ))
+        for a in self.Assistents:
+            a.cooldown = 0.5
+        self.resize(self._window)
+        

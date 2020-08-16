@@ -36,7 +36,10 @@ IMG_ASSETS = {"ship dark": pygame.image.load(os.path.join("assets", "ship1.png")
               "light bullet": pygame.image.load(os.path.join("assets", "light bullet.png")),
               "zag": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "zag.png")), 180),
               "hit light": pygame.image.load(os.path.join("assets", "hit light.png")),
-              "hit dark": pygame.image.load(os.path.join("assets", "hit dark.png"))}
+              "hit dark": pygame.image.load(os.path.join("assets", "hit dark.png")),
+              "asst dark": pygame.image.load(os.path.join("assets", "asst1.png")),
+              "asst light": pygame.image.load(os.path.join("assets", "asst2.png"))
+              }
 
 SCALE_ASSETS = {"ship dark": .2,
                 "ship light": .2,
@@ -49,7 +52,11 @@ SCALE_ASSETS = {"ship dark": .2,
                 "white": 1.5,
                 "light bullet": .2,
                 "hit light": .2,
-                "hit dark": .2}
+                "hit dark": .2,
+                "asst dark": .1,
+                "asst light": .1,
+                
+                }
 
 
 def RIP_framerate(framerate):
@@ -88,8 +95,9 @@ def main():
     player_bullet_speed = -10.0
     player_speed = 12
     player = Player([500, 460], game_screen.shape, player_speed, IMG_ASSETS,
-                    player_fire_key, player_bullet_speed)
+                    player_fire_key, player_bullet_speed,window=game_screen)
 
+    GM.player = player
     # Talvez o padrão de tiro deva ser acessado diretamente em PlayerShoot pelo disparo que faça sentido
     player.draw(game_screen)
 

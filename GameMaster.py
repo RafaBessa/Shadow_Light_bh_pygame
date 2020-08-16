@@ -29,7 +29,7 @@ class GameMaster:
         self.Wkeys = ["white"]
         #self.cooldowns = [0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.]
         self.cooldowns = np.arange(0.5,1.5,0.05)
-        
+        self.player = None
         self.colors = [ColorEnum.Light,ColorEnum.Shadow]
         self.ASSETS = IMG_ASSETS
         self.SCALE = SCALE_ASSETS
@@ -59,7 +59,9 @@ class GameMaster:
 
     def next_level(self, inimigos, shape):
         self.lvl += 1
-
+        if (self.lvl%3 == 0): #adiciona os assistentes
+            self.player.CreateAssistente()
+            
         if self.ShootTypeProb["Basic"] > 0:
             for key in self.ShootTypeProb:
                 self.ShootTypeProb[key] -= self.LevelShootProbRearanger[key]

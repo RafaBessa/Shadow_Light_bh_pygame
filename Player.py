@@ -5,7 +5,7 @@ import PlayerShoot as PS
 import math
 from ColorEnum import ColorEnum
 from time import time
-
+import AudioCaller
 
 class Player(Entity):
     _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double(), PS.Shoot_Triple()]
@@ -175,6 +175,9 @@ class Player(Entity):
                                      self.high_precision)
 
             self.timer = time()
+
+        #AudioCaller.playAudio("laser1")
+        
 
     def scoreUpdate(self, DeathCount, PassingCount):
         # print(str(self.speed))

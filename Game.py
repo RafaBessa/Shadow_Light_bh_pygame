@@ -17,7 +17,7 @@ from ColorEnum import ColorEnum
 import MovimentoBala as mb
 
 pygame.font.init()
-
+pygame.mixer.init()
 # Default dimensions
 DEFAULT_WINDOW_SIZES = [(1120, 580), (1680, 870)]
 default_width, default_height = DEFAULT_WINDOW_SIZES[0]

@@ -14,6 +14,7 @@ class Player(Entity):
         def __init__(self, dimensions, IMG_ASSETS, max_health):
             self.max_health = max_health
             selfh = IMG_ASSETS['healthbar'].get_height()
+            selfw = IMG_ASSETS['healthbar'].get_width()
             super().__init__("healthbar", [0, dimensions[1] - selfh], dimensions, IMG_ASSETS)
 
         def hit(self, dmg):
@@ -38,8 +39,6 @@ class Player(Entity):
             self.coordinates = coordinates
             self.resize(window)
             super().draw(window)
-
-
 
     def __init__(self, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed):
         self.key_light = "ship light"
@@ -172,12 +171,13 @@ class Player(Entity):
         now = time()
         if now - self.timer > self.cooldown:
             self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.color,
-                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions, self.high_precision)
+                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions,
+                                     self.high_precision)
 
             self.timer = time()
 
     def scoreUpdate(self, DeathCount, PassingCount):
-        print(str(self.speed))
+        # print(str(self.speed))
         now = time()
         if now - self.score_time > 5:
             self.killStreak = 0
@@ -187,12 +187,12 @@ class Player(Entity):
         _streakValue = 10
         # if PassingCount > 0:
         #     self.killStreak = 0
-        if DeathCount>=1:
-       #     print(str(self.bullet_speed) + " , " +  str(self.cooldown))
+        if DeathCount >= 1:
+            #     print(str(self.bullet_speed) + " , " +  str(self.cooldown))
             self.bullet_speed[0] *= 1.10
             self.cooldown *= 1.15
             self.speed *= 1.06
-            #print(str(self.speed))
+            # print(str(self.speed))
         upgradetype = math.floor(self.killStreak / _streakValue)
         if upgradetype >= len(self._ShootType):
             upgradetype = len(self._ShootType) - 1

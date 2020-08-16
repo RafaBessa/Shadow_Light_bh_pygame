@@ -19,7 +19,7 @@ class Player(Entity):
         def hit(self, dmg):
             self.coordinates[0] -= round(self.width * dmg / self.max_health)
 
-    def __init__(self, key, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed, shotStrategy):
+    def __init__(self, key, coordinates, dimensions, speed, IMG_ASSETS, bullet_key, bullet_speed, shotStrategy, fire_pattern):
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
 
         self.health = 10
@@ -30,6 +30,7 @@ class Player(Entity):
 
         self.bullet_type = [bullet_key]
         self.bullet_speed = [bullet_speed]
+        self.fire_pattern = fire_pattern
 
         self.cooldown = .1
         self.timer = self.cooldown + 1
@@ -127,7 +128,7 @@ class Player(Entity):
         now = time()
         if now - self.timer > self.cooldown:
             self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.color,
-                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions, high_precision)
+                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions, high_precision, self.fire_pattern)
 
             self.timer = time()
 

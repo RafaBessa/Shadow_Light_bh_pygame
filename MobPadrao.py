@@ -1,14 +1,13 @@
 from time import time
 
-from Entity import Entity
 from random import random
-
 
 import Entity
 import MovimentoMob as mm
+import MovimentoBala as mb
 
 class MobPadrao(Entity.Entity):
-    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType,movStategy):
+    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, movStategy):
 
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
         self.health = 1
@@ -50,5 +49,5 @@ class MobPadrao(Entity.Entity):
         r = random()
         if now - self.timer > self.cooldown and random() > .3:
             bullets.fire(bullet, [self.x + round(self.width / 2), self.y], self._dimensions,
-                             IMG_ASSETS, bullet_speed, game_screen, self.bulletType)
+                             IMG_ASSETS, bullet_speed, game_screen, self.bulletType, mb.Mov_LinearFall())
             self.timer = time()

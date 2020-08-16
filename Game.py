@@ -14,7 +14,7 @@ import MovimentoMob as mm
 import PlayerShoot as ps
 import GameMaster as gm
 from ColorEnum import ColorEnum
-import pyganim
+import MovimentoBala as mb
 
 pygame.font.init()
 
@@ -69,8 +69,11 @@ def main():
     player_fire_key = "red bullet"
     player_bullet_speed = -10
     player_speed = 12
-    player = Player("ship1", [500, 460], game_screen.shape, player_speed,
-                    IMG_ASSETS, player_fire_key, player_bullet_speed, ps.Shoot_Basic())
+    player = Player("ship1", [500, 460], game_screen.shape, player_speed, IMG_ASSETS,
+                    player_fire_key, player_bullet_speed,
+                    ps.Shoot_Basic(), mb.Mov_LinearFall())
+
+    # Talvez o padrão de tiro deva ser acessado diretamente em PlayerShoot pelo disparo que faça sentido
     player.draw(game_screen)
 
     # Enemies

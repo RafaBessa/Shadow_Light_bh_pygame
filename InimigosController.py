@@ -2,7 +2,7 @@ from MobPadrao import MobPadrao
 from enum import Enum
 from copy import copy
 import MovimentoMob as mm
-
+import PlayerShoot as PS
 class Inimigos:
     class EnumFormations(Enum):
         LINE = 1
@@ -11,8 +11,8 @@ class Inimigos:
     def __init__(self):
         self.INIMIGOS = []
 
-    def criar(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS,bulletType,cd=0.5, mov_strat=mm.Mov_LinearFall(), life =1):
-        self.INIMIGOS.append(MobPadrao(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS,bulletType, mov_strat,  cooldown=cd, life=life))
+    def criar(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS,bulletType,cd=0.5, mov_strat=mm.Mov_LinearFall(), life =1, shootStrategy = PS.Shoot_Basic()):
+        self.INIMIGOS.append(MobPadrao(key, coordinates, dimensions, speed, acceleration, IMG_ASSETS,bulletType, mov_strat,  cooldown=cd, life=life, shootStrategy=shootStrategy))
         
     def mover(self, game_screen, dt):
         killNumbers = 0
@@ -42,7 +42,7 @@ class Inimigos:
             i.shoot(bullets, IMG_ASSETS, game_screen)
 
     def criarSwarm(self, type, quant, key, startcoordinates, space, dimension, speed, acceleration, IMG_ASSETS,
-                   SCALE_ASSETS, bullettype, mov_strategy=mm.Mov_LinearFall(), life=1, cd = 0.5):
+                   SCALE_ASSETS, bullettype, mov_strategy=mm.Mov_LinearFall(), life=1, cd = 0.5, shootStrategy = PS.Shoot_Basic()):
 
         img_dim = (IMG_ASSETS[key].get_width(), IMG_ASSETS[key].get_height())  # pega a dimensão do asset
         scale = SCALE_ASSETS[key]
@@ -50,7 +50,7 @@ class Inimigos:
         cord = self.__coordenadaTipo(type, quant, space, startcoordinates, dimension, img_dim, scale)
 
         for c in cord:
-            self.criar(key, c, dimension, speed, acceleration, IMG_ASSETS, bullettype, mov_strat=mov_strategy,life= life,cd=cd)
+            self.criar(key, c, dimension, speed, acceleration, IMG_ASSETS, bullettype, mov_strat=mov_strategy,life= life,cd=cd,shootStrategy = shootStrategy)
         # self.INIMIGOS.append(MobPadrao(key, c, dimension, speed, acceleration, IMG_ASSETS))
 
         pass

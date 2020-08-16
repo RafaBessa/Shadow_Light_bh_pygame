@@ -12,14 +12,14 @@ class GameMaster:
         self.Bkeys = ["roundguy", "zag"]
         self.Wkeys = ["white"]
         #self.cooldowns = [0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.]
-        self.cooldowns = np.arange(0.2,0.8,0.05)
+        self.cooldowns = np.arange(0.5,1.5,0.05)
         
         self.colors = [ColorEnum.Light,ColorEnum.Shadow]
         self.ASSETS = IMG_ASSETS
         self.SCALE = SCALE_ASSETS
         self.speed = 2
         self.acceleration = .1
-        self.bossFreq = 2
+        self.bossFreq = 5
         self.bosscount = 0
         self.bossY = [50,100,150,200]
     def detect_state(self, inimigos, shape):

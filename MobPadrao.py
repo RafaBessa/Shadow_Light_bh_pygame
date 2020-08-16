@@ -6,8 +6,9 @@ import Entity
 import MovimentoMob as mm
 import MovimentoBala as mb
 import pygame
+import PlayerShoot as PS
 class MobPadrao(Entity.Entity):
-    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, movStategy, cooldown, life = 1):
+    def __init__(self, key, coordinates, dimensions, speed, acceleration, IMG_ASSETS, bulletType, movStategy, cooldown, life = 1, shootStrategy = PS.Shoot_Basic()):
 
         super().__init__(key, coordinates, dimensions, IMG_ASSETS)
         self.health = life
@@ -22,7 +23,8 @@ class MobPadrao(Entity.Entity):
         self.cooldown = cooldown
         self.timer = self.cooldown + 1
         self.direction = True
-
+        self.high_precision = False
+        self.shootStrategy = shootStrategy
     def resize(self, window):
         super().resize(window)
         self.speed = self._speed * self.img.get_height()
@@ -44,16 +46,44 @@ class MobPadrao(Entity.Entity):
         if not (bulletType == self.bulletType):
             self.health -= dmg
 
+    # def shoot(self, bullets, IMG_ASSETS, game_screen):
+    #     bullet_speed = 4
+    #     bullet = 'red bullet'
+    #     now = time()
+    #     r = random()
+      
+    #     if now - self.timer > self.cooldown and random() > .3:
+    #         bullets.fire(bullet, [self.x + round(self.width / 2), self.y + round(0.8 * self.height)], self._dimensions,
+    #                          IMG_ASSETS, (bullet_speed + round(0.1*self.speed)), game_screen, self.bulletType, mb.Mov_LinearFall())
+    #         self.timer = time()
+
+
+
+    @property
+    def shoot_strg(self) -> PS.AbstractShoot:
+        return self.shootStrategy
+
+    @shoot_strg.setter
+    def shoot_strg(self, atirar: PS.AbstractShoot) -> None:
+        self.shootStrategy = self.shoot_met
+
     def shoot(self, bullets, IMG_ASSETS, game_screen):
+        # self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
         bullet_speed = 4
         bullet = 'red bullet'
         now = time()
         r = random()
-      
+    #      bullets.fire(bullet, [self.x + round(self.width / 2), self.y + round(0.8 * self.height)], self._dimensions,
+    # #                          IMG_ASSETS, (bullet_speed + round(0.1*self.speed)), game_screen, self.bulletType, mb.Mov_LinearFall())
+    # #      
         if now - self.timer > self.cooldown and random() > .3:
-            bullets.fire(bullet, [self.x + round(self.width / 2), self.y + round(0.8 * self.height)], self._dimensions,
-                             IMG_ASSETS, (bullet_speed + round(0.1*self.speed)), game_screen, self.bulletType, mb.Mov_LinearFall())
+            self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.bulletType,
+                                    self.x + round(self.width / 2), self.y + round(0.8 * self.height), self.width, (bullet_speed+ round(0.1*self.speed)), self._dimensions,
+                                    self.high_precision)
             self.timer = time()
+
+
+
 
     def draw(self, window):
         

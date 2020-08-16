@@ -39,8 +39,9 @@ class MobPadrao(Entity.Entity):
     def movimentar(self, dt):
         self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
 
-    def hit(self, dmg):
-        self.health -= dmg
+    def hit(self, dmg, bulletType):
+        if not (bulletType == self.bulletType):
+            self.health -= dmg
 
     def shoot(self, bullets, IMG_ASSETS, game_screen):
         bullet_speed = 4

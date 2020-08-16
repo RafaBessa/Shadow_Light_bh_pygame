@@ -63,10 +63,11 @@ class Player(Entity):
 
         self.healthbar.draw(window)
 
-    def hit(self, dmg):
-        self.health -= dmg
-        self.healthbar.hit(dmg)
-        self.killStreak = 0
+    def hit(self, dmg, bullet_type):
+        if not (bullet_type == self.color):
+            self.health -= dmg
+            self.healthbar.hit(dmg)
+            self.killStreak = 0
 
     def resize(self, window):
         super().resize(window)

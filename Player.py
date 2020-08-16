@@ -56,8 +56,8 @@ class Player(Entity):
         self._speed = speed  # in widths per second
         self.speed = speed * self.img.get_width()
         self.bullet_type = [bullet_key]
-        self._startbullet_speed = [bullet_speed]
-        self.bullet_speed = [bullet_speed]
+        self._startbullet_speed = bullet_speed
+        self.bullet_speed = bullet_speed
 
         self.cooldown = .1
         self._startcooldown = .1
@@ -103,7 +103,7 @@ class Player(Entity):
             self.killStreak = 0
             self.cooldown = self._startcooldown
             self.speed = self._speed * self.img.get_width()
-            self.bullet_speed[0] = self._startbullet_speed[0]
+            self.bullet_speed = self._startbullet_speed
 
     def resize(self, window):
         super().resize(window)
@@ -184,12 +184,12 @@ class Player(Entity):
         self.score_time = now
         self.score += DeathCount
         self.killStreak += DeathCount
-        _streakValue = 10
+        _streakValue = 5
         # if PassingCount > 0:
         #     self.killStreak = 0
         if DeathCount >= 1:
             #     print(str(self.bullet_speed) + " , " +  str(self.cooldown))
-            self.bullet_speed[0] *= 1.10
+            self.bullet_speed *= 1.10
             self.cooldown *= 1.15
             self.speed *= 1.06
             # print(str(self.speed))

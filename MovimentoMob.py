@@ -9,71 +9,71 @@ class AbstractMoviment(ABC):
 
 
 class Mov_LinearFall(AbstractMoviment):
-    def move(self, coordinates, speed, acceleration, lastcoordinate,screen, dt ):
+    def move(self, coordinates, speed, acceleration, lastcoordinate,screen,direction, dt ):
         speed += acceleration * dt
         coordinates[1] = round(coordinates[1] + speed * dt)
-        return coordinates, speed, acceleration
+        return coordinates, speed, acceleration, direction
         
 
 class Mov_ZigZag(AbstractMoviment):
-    direct = True
-    def move(self, coordinates, speed, acceleration, startcoordinate,screen, dt ):
+    
+    def move(self, coordinates, speed, acceleration, startcoordinate,screen,direction, dt ):
         ZigZageamento = 100 #variacao max da nave
         coordinates[1] = round(coordinates[1] + speed * dt)
 
 
-        if (startcoordinate[0] + ZigZageamento  >= coordinates[0] ) and (self.direct): #se ele tava na esquerda vai pra direita 
+        if (startcoordinate[0] + ZigZageamento  >= coordinates[0] ) and (direction): #se ele tava na esquerda vai pra direita 
             coordinates[0] = round(coordinates[0] + speed * dt)
 
-        elif (startcoordinate[0] - ZigZageamento  <= coordinates[0] ) and (not self.direct) :
+        elif (startcoordinate[0] - ZigZageamento  <= coordinates[0] ) and (not direction) :
             coordinates[0] = round(coordinates[0] - speed * dt)
         
         else:
-            self.direct = not self.direct
+            direction = not direction
 
         if(coordinates[0] < 0):
             coordinates[0] = 0
-        return coordinates, speed, acceleration
+        return coordinates, speed, acceleration, direction
 
 
 class Mov_HorizontalBossLeft(AbstractMoviment):
-    direct = True
-    def move(self, coordinates, speed, acceleration, lastcoordinate,screen, dt):
+    
+    def move(self, coordinates, speed, acceleration, lastcoordinate,screen, direction, dt):
         speed += acceleration * dt
         Maxx, Maxy = screen
-        if self.direct:
+        if not direction:
             if(coordinates[0] + speed ) >= Maxx:
-                self.direct = False
+                direction = True
             else:
                 coordinates[0] = round(coordinates[0] + speed)
             
         else:
             if(coordinates[0] - speed ) <= 0:
-                self.direct = True
+                direction = False
             else:
                 coordinates[0] = round(coordinates[0] - speed)
 
-        return coordinates, speed, acceleration
+        return coordinates, speed, acceleration, direction
 
 class Mov_HorizontalBossRight(AbstractMoviment):
-    direct = False
-    def move(self, coordinates, speed, acceleration, lastcoordinate, screen, dt):
+    
+    def move(self, coordinates, speed, acceleration, lastcoordinate, screen,direction, dt):
         
         speed += acceleration * dt
         Maxx, Maxy = screen
-        if self.direct:
+        if direction:
             if(coordinates[0] + speed ) >= Maxx:
-                self.direct = False
+                direction = False
             else:
                 coordinates[0] = round(coordinates[0] + speed)
             
         else:
             if(coordinates[0] - speed ) <= 0:
-                self.direct = True
+                direction = True
             else:
                 coordinates[0] = round(coordinates[0] - speed)
             
 
-        return coordinates, speed, acceleration
+        return coordinates, speed, acceleration, direction
         
         

@@ -57,9 +57,14 @@ class GameMaster:
         self.ShootTypeProb = {"Basic": 0.75,
                               "Double": 0.2,
                               "Triple": 0.05}
+                              
         self.LevelShootProbRearanger = {"Basic": -0.05,
                                         "Double": +0.035,
                                         "Triple": +0.015}
+
+        self.assistBonus = {"shoot":0.33,
+                            "cd": 0.33,
+                            "bulletspeed": 0.33}
 
     def detect_state(self, inimigos, shape):
         if len(inimigos.INIMIGOS) <= 3:
@@ -73,7 +78,29 @@ class GameMaster:
         self.quant = [i + 1 for i in self.quant]
 
         if (self.lvl % 3 == 0):  # adiciona os assistentes
-            self.player.CreateAssistente()
+            if len(self.player.Assistents) < 2:
+                self.player.CreateAssistente()
+            else:
+                wr = WeightedRandomizer(self.assistBonus)
+                bonus = wr.random()
+
+                if(bonus == "shoot"):
+                    for a in self.player.Assistents:
+                        if( a.killStreak + 1  < len(a._ShootType)):
+                            a.killStreak += 1
+                        else:
+                            self.assistBonus["shoot"] = 0.0
+
+                        a.shootStrategy = a._ShootType[a.killStreak]
+                    print (bonus)
+                elif (bonus == "cd"):
+                    for a in self.player.Assistents:
+                        a.cooldowns *= 0.9
+                    print (bonus)
+                elif  (bonus == "bulletspeed"):
+                    for a in self.player.Assistents:
+                        a.bulletspeed *= 1.1
+                    print (bonus)
 
         if self.ShootTypeProb["Basic"] > 0:
             for key in self.ShootTypeProb:

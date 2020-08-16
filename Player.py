@@ -266,7 +266,7 @@ class Player(Entity):
         else:
             cord = [self.coordinates[0] - self.width - 10 ,self.coordinates[1]] 
         
-        self.Assistents.append(Player(cord,self._dim, self.speed,self._IMG_ASS, "red bullet", self.bullet_speed, isplayer=False, startcolor=self.color ))
+        self.Assistents.append(Player(cord,self._dim, self.speed,self._IMG_ASS, "red bullet", -20.0, isplayer=False, startcolor=self.color ))
         for a in self.Assistents:
             a.cooldown = 0.5
         self.resize(self._window)

@@ -8,7 +8,7 @@ from time import time
 
 
 class Player(Entity):
-    _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double()]
+    _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double(), PS.Shoot_Triple()]
 
     class Healthbar(Entity):
         def __init__(self, dimensions, IMG_ASSETS, max_health):

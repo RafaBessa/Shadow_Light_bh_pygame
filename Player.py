@@ -3,8 +3,9 @@ import pygame
 from time import time
 import PlayerShoot as PS
 import math
-from ColorEnum import ColorEnum 
+from ColorEnum import ColorEnum
 from time import time
+
 
 class Player(Entity):
     _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double()]
@@ -40,14 +41,14 @@ class Player(Entity):
         self.colorDelay = 0
 
     def ChangeColor(self):
-        if (time() - self.colorDelay ) < 0.15:
+        if (time() - self.colorDelay) < 0.15:
             return
         self.colorDelay = time()
-        if self.color == ColorEnum.Light :
+        if self.color == ColorEnum.Light:
             self.color = ColorEnum.Shadow
         else:
             self.color = ColorEnum.Light
-    
+
     def draw(self, window):
 
         super().draw(window)
@@ -73,7 +74,7 @@ class Player(Entity):
         self.healthbar.resize(window)
         self.speed = self._speed * self.img.get_width()
 
-    def walk(self, key, window, dt):
+    def move(self, key, window, dt, high_precision):
         u = (key[pygame.K_d] - key[pygame.K_a])
         v = (key[pygame.K_s] - key[pygame.K_w])
         modulus = (u ** 2 + v ** 2) ** .5
@@ -82,6 +83,9 @@ class Player(Entity):
         if modulus > 0:
             # making linear velocity equal to player velocity
             modulus = self.speed * dt / modulus
+            if high_precision:
+                modulus = 0.6 * modulus
+
             u = round(u * modulus)
             v = round(v * modulus)
             # Checking left border
@@ -118,12 +122,12 @@ class Player(Entity):
     def shoot_strg(self, atirar: PS.AbstractShoot) -> None:
         self.shootStrategy = self.shoot_met
 
-    def shoot(self, bullets, IMG_ASSETS, game_screen):
+    def shoot(self, bullets, IMG_ASSETS, game_screen, high_precision):
         # self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
         now = time()
         if now - self.timer > self.cooldown:
-            self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen,  self.color,
-                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions, False)
+            self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.color,
+                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions, high_precision)
 
             self.timer = time()
 
@@ -137,7 +141,7 @@ class Player(Entity):
         _streakValue = 10
         if PassingCount > 0:
             self.killStreak = 0
-        
+
         upgradetype = math.floor(self.killStreak / _streakValue)
         if upgradetype >= len(self._ShootType):
             upgradetype = len(self._ShootType) - 1

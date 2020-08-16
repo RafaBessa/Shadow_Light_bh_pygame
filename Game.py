@@ -1,7 +1,10 @@
+# NECESSARY DISCLAIMERS AND ATTRIBUTIONS:
+# Space ships and bullets were made using BizmasterStudios' "Spaceship Creation Kit" available on itch.io
+# Available at https://bizmasterstudios.itch.io/spaceship-creation-kit at the time of writing (15/08/2020 - dd/mm/yyyy)
+
 import os
 import pygame  # ver 1.9.6
 from time import time
-
 from Bullets import Bullets
 from Player import Player
 from MobPadrao import MobPadrao
@@ -11,6 +14,7 @@ import MovimentoMob as mm
 import PlayerShoot as ps
 import GameMaster as gm
 from ColorEnum import ColorEnum
+import pyganim
 
 pygame.font.init()
 
@@ -24,11 +28,11 @@ BG_W, BG_H = BACKGROUND.get_width(), BACKGROUND.get_height()
 
 IMG_ASSETS = {"ship1": pygame.image.load(os.path.join("assets", "ship1.png")),
               "roundguy": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "roundguy.png")), 180),
-              "red bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "red bullet.png")), 180),
-              "healthbar": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "healthbar.png")), 180),
+              "red bullet": pygame.image.load(os.path.join("assets", "red bullet.png")),
+              "healthbar":pygame.image.load(os.path.join("assets", "healthbar.png")),
               "white": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "white.png")), 180),
-              "dark bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "dark bullet.png")), 180),
-              "light bullet": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "light bullet.png")), 180),
+              "dark bullet": pygame.image.load(os.path.join("assets", "dark bullet.png")),
+              "light bullet": pygame.image.load(os.path.join("assets", "light bullet.png")),
               "zag": pygame.transform.rotate(pygame.image.load(os.path.join("assets", "zag.png")), 180)}
 
 SCALE_ASSETS = {"ship1": .2,
@@ -41,8 +45,12 @@ SCALE_ASSETS = {"ship1": .2,
                 "white": 1.5,
                 "light bullet": .2}
 
+# frames = list(zip(images, [200, 200, 600]))
+# animObj = pyganim.PygAnimation(frames)
+# animObj.play()
+
 def main():
-    FPS: int = 70
+    FPS: int = 80
     clock = pygame.time.Clock()
     t0 = time()
 
@@ -60,7 +68,7 @@ def main():
     # Player
     player_fire_key = "red bullet"
     player_bullet_speed = -10
-    player_speed = 8
+    player_speed = 12
     player = Player("ship1", [500, 460], game_screen.shape, player_speed,
                     IMG_ASSETS, player_fire_key, player_bullet_speed, ps.Shoot_Basic())
     player.draw(game_screen)
@@ -72,9 +80,6 @@ def main():
         inimigos.EnumFormations.V, 3, "roundguy", [250, 0], 20, game_screen.shape,
         2, 0.1, IMG_ASSETS, SCALE_ASSETS, bullettype = ColorEnum.Light , mov_strategy=mm.Mov_ZigZag()
     )
-    # inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
-    # inimigos.criar("roundguy", [400, 0], game_screen.shape, 0.5, 1, IMG_ASSETS)
-    # inimigos.criar("roundguy", [400, 100], game_screen.shape, 0, 0, IMG_ASSETS)
 
     # Bullets
     player_bullets = Bullets([], IMG_ASSETS)
@@ -133,9 +138,16 @@ def main():
 
         # AFTER CHANGING THE SCREEN
         # Player
-        player.walk(key, game_screen, dt)
+        high_precision = False
+        if key[pygame.K_LSHIFT]:
+            high_precision = True
+
+        player.move(key, game_screen, dt, high_precision)
+
         if key[pygame.K_SPACE]:
-            player.shoot(player_bullets, IMG_ASSETS, game_screen)
+            player.shoot(player_bullets, IMG_ASSETS, game_screen, high_precision)
+        if key[pygame.K_e]:
+            player.ChangeColor()
         if key[pygame.K_e]:
             player.ChangeColor()
             
@@ -150,11 +162,12 @@ def main():
 
         player_bullets.move(dt, game_screen)
         player_bullets.hit(inimigos.INIMIGOS)
-
         # New game state
        # inimigos = GM.detect_state(inimigos, (BG_W, BG_H))
         GM.detect_state(inimigos, game_screen.shape)
         inimigos.resize(game_screen)
+
+    print(player.score)
     pygame.quit()
 
 

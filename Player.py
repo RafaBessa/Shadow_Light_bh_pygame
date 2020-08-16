@@ -184,7 +184,7 @@ class Player(Entity):
         self.score_time = now
         self.score += DeathCount
         self.killStreak += DeathCount
-        _streakValue = 10
+        _streakValue = 5
         # if PassingCount > 0:
         #     self.killStreak = 0
         if DeathCount >= 1:

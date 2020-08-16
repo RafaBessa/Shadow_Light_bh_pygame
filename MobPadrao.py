@@ -74,11 +74,11 @@ class MobPadrao(Entity.Entity):
         now = time()
         r = random()
     #      bullets.fire(bullet, [self.x + round(self.width / 2), self.y + round(0.8 * self.height)], self._dimensions,
-    # #                          IMG_ASSETS, (bullet_speed + round(0.1*self.speed)), game_screen, self.bulletType, mb.Mov_LinearFall())
+    # #                          IMG_ASSETS,+ round(0.8*(self.width / 2)) (bullet_speed + round(0.1*self.speed)), game_screen, self.bulletType, mb.Mov_LinearFall())
     # #      
         if now - self.timer > self.cooldown and random() > .3:
             self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.bulletType,
-                                    self.x + round(self.width / 2), self.y + round(0.8 * self.height), self.width, (bullet_speed+ round(0.1*self.speed)), self._dimensions,
+                                    self.x , self.y + round(0.8 * self.height), self.width, (bullet_speed+ round(0.1*self.speed)), self._dimensions,
                                     self.high_precision)
             self.timer = time()
 

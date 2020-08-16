@@ -3,6 +3,22 @@ import MovimentoMob as mm
 import random
 from ColorEnum import ColorEnum
 import numpy as np
+import PlayerShoot as PS 
+
+class WeightedRandomizer:
+    def __init__ (self, weights):
+        self.__max = .0
+        self.__weights = []
+        for value, weight in weights.items ():
+            self.__max += weight
+            self.__weights.append ( (self.__max, value) )
+
+    def random (self):
+        r = random.random () * self.__max
+        for ceil, value in self.__weights:
+            if ceil > r: return value
+
+
 class GameMaster:
     def __init__(self, IMG_ASSETS, SCALE_ASSETS):
         self.lvl = 0
@@ -22,6 +38,18 @@ class GameMaster:
         self.bossFreq = 5
         self.bosscount = 0
         self.bossY = [50,100,150,200]
+
+        self.ShootType = {"Basic": PS.Shoot_Basic(),
+                        "Double" : PS.Shoot_Double(), 
+                        "Triple" : PS.Shoot_Triple()}
+
+        self.ShootTypeProb = { "Basic": 0.75,
+                        "Double" : 0.2, 
+                        "Triple" : 0.05}
+        self.LevelShootProbRearanger = { "Basic": -0.05,
+                                        "Double" : +0.035, 
+                                        "Triple" : +0.015}
+
     def detect_state(self, inimigos, shape):
         if len(inimigos.INIMIGOS) == 0:
             self.next_level(inimigos, shape)
@@ -31,6 +59,10 @@ class GameMaster:
 
     def next_level(self, inimigos, shape):
         self.lvl += 1
+
+        if self.ShootTypeProb["Basic"] > 0:
+            for key in self.ShootTypeProb:
+                self.ShootTypeProb[key] -= self.LevelShootProbRearanger[key]
         self.quant = [i + 1 for i in self.quant]
         self.speed = self.speed * 1.1
         if (self.lvl % self.bossFreq) == 0:
@@ -56,8 +88,10 @@ class GameMaster:
         acceleration = self.acceleration
         cd = random.choice(self.cooldowns)
         cd = random.triangular(cd-0.1,cd,cd+0.1)
+        wr = WeightedRandomizer(self.ShootTypeProb)
+
         inimigos.criarSwarm(formation, quant, key, startcoordinates, space, shape, speed,
-                            acceleration, self.ASSETS, self.SCALE, color, mov,cd=cd)
+                            acceleration, self.ASSETS, self.SCALE, color, mov,cd=cd, shootStrategy=self.ShootType[wr.random()])
 
         return inimigos
 

@@ -38,7 +38,10 @@ IMG_ASSETS = {"ship dark": pygame.image.load(os.path.join("assets", "ship1.png")
               "asst light": pygame.image.load(os.path.join("assets", "asst2.png")),
               "bbeg center": pygame.image.load(os.path.join("assets", "bbeg center.png")),
               "blue right": pygame.image.load(os.path.join("assets", "blue right.png")),
-              "white left": pygame.image.load(os.path.join("assets", "white left.png"))}
+              "white left": pygame.image.load(os.path.join("assets", "white left.png")),
+              "light laser": pygame.image.load(os.path.join("assets", "light laser.png")),
+              "dark laser": pygame.image.load(os.path.join("assets", "dark laser.png"))
+              }
 
 SCALE_ASSETS = {"ship dark": .2,
                 "ship light": .2,
@@ -58,7 +61,10 @@ SCALE_ASSETS = {"ship dark": .2,
                 "asst light": .1,
                 "bbeg center": 1,
                 "blue right": 0.4365079365079365,
-                "white left": 0.4296875}
+                "white left": 0.4296875,
+                "light laser": .4,
+                "dark laser": .4,
+                }
 
 
 def RIP_framerate(framerate):
@@ -120,6 +126,7 @@ def main():
         inimigos.draw(game_screen)
         player_bullets.draw(game_screen)
         enemy_bullets.draw(game_screen)
+        game_screen.drawRect()
         if lost:
             lost_label = lost_font.render("Game Over", 1, lost_font_rgb)
             game_screen._screen.blit(lost_label,
@@ -163,7 +170,7 @@ def main():
             game_screen.resizeToDefault(key[pygame.K_EQUALS] - key[pygame.K_MINUS])  # next size
             player.resize(game_screen)
             inimigos.resize(game_screen)
-            player_bullets.resize(game_screen)
+            player_bullets.resize(game_screen) 
             enemy_bullets.resize(game_screen)
         if key[pygame.K_F11]:
             game_screen.toggleFullscreen()
@@ -187,13 +194,13 @@ def main():
         # Bullets
         enemy_bullets.move(dt, game_screen)
         enemy_bullets.hit([player])
-
+     
         player_bullets.move(dt, game_screen)
         player_bullets.hit(inimigos.INIMIGOS)
         # New game state
         GM.detect_state(inimigos, game_screen.shape)
         inimigos.resize(game_screen)
-
+     
     print(player.score)
     #RIP_framerate(framerate)
 

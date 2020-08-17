@@ -31,11 +31,17 @@ class Window:
 
         # Adjusting background
         self.background = pygame.transform.scale(BACKGROUND, (width, height))
-
+        self.drawListRect = []
         # Displaying background
         self._screen.blit(self.background, (0, 0))
         pygame.display.update()
 
+
+
+    def drawRect(self):
+        for r in self.drawListRect:
+           pygame.draw.rect(self._screen, r["color"], r["coord"])   
+        self.drawListRect.clear()
     def toggleFullscreen(self):
         if self._fullscreen:
             self._screen = pygame.display.set_mode(self.shape, pygame.RESIZABLE)
@@ -81,3 +87,5 @@ class Window:
 
     def blit(self):
         self._screen.blit(self.background, (0, 0))
+
+    

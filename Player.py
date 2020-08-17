@@ -6,7 +6,7 @@ from ColorEnum import ColorEnum
 from time import time
 
 class Player(Entity):
-    _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double(), PS.Shoot_Triple()]
+    _ShootType = [PS.Shoot_Basic(), PS.Shoot_Double(), PS.Shoot_Triple(), PS.Shoot_Charging_Laser() ]
     Assistents = []
     class Healthbar(Entity):
         def __init__(self, dimensions, IMG_ASSETS, max_health):
@@ -74,6 +74,7 @@ class Player(Entity):
         self.score_time = 0
         self.bombed = 0
         self.colorDelay = 0
+        self.shoot_args = {}
 
     def ChangeColor(self, window):
         if (time() - self.colorDelay) < 0.15:
@@ -211,11 +212,28 @@ class Player(Entity):
     def shoot(self, bullets, IMG_ASSETS, game_screen):
         # self.coordinates, self.speed, self.acceleration = self.mover_strg.move(self.coordinates, self.speed, self.acceleration, self._startcoordinate, dt)
         now = time()
-        if now - self.timer > self.cooldown:
-            self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.color,
-                                     self.x, self.y, self.width, self.bullet_speed, self._dimensions,
-                                     self.high_precision)
+        self.shoot_args["calcTime"] = now - self.timer
+        self.shoot_args["cd"] = self.cooldown
+       
+        if  isinstance(self.shootStrategy, PS.Shoot_Charging_Laser):
+            
+              
+            if "charging" in self.shoot_args :
+                self.shoot_args["charging"] += 1
+                if ((time() - self.shoot_args["lastcharge"] ) > 0.3) or (self.shoot_args["color"] != self.color) :
+                    self.shoot_args["charging"] = 1
+                    
+                self.shoot_args["lastcharge"] = time()    
+                self.shoot_args["color"] = self.color
+            else:
+                self.shoot_args["charging"] = 1
+                self.shoot_args["lastcharge"] = time()
+                self.shoot_args["color"] = self.color
 
+        didshoot = self.shootStrategy.Shoot(bullets, IMG_ASSETS, game_screen, self.color,
+                                    self.x, self.y, self.width, self.bullet_speed, self._dimensions,
+                                    self.high_precision, self.shoot_args)
+        if didshoot:
             self.timer = time()
 
         if self.isplayer:
@@ -254,6 +272,8 @@ class Player(Entity):
 
 
         self.shootStrategy = self._ShootType[upgradetype]
+
+        #self.shootStrategy = PS.Shoot_Charging_Laser()
 
     def CreateAssistente(self):
         if (len(self.Assistents) >= 2 ):

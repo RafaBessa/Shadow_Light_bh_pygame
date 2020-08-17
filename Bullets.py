@@ -9,8 +9,12 @@ class Bullets:
     def fire(self, key, coordinates, dimensions, IMG_ASSETS, speed, game_screen, type, fire_pattern):
         if type == ColorEnum.Light:
             key = "light bullet"     
-        else:
+        elif type == ColorEnum.Shadow:
             key = "dark bullet"
+        elif type == "laser light":
+            key = "light laser"
+        elif type == "laser dark":
+            key = "dark laser"
         
         self.bullets.append(Bullet(key, coordinates, dimensions, IMG_ASSETS, speed, game_screen, type, fire_pattern))
 

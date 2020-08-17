@@ -97,3 +97,9 @@ class Inimigos:
                 y -= space
 
         return cord
+
+    def get_bombed(self):
+        for i in self.INIMIGOS:
+            i.health -= 10
+
+

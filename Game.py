@@ -97,7 +97,7 @@ def main():
     player_bullet_speed = -20.0
     player_speed = 12
     player = Player([500, 460], game_screen.shape, player_speed, IMG_ASSETS,
-                    player_fire_key, player_bullet_speed,window=game_screen)
+                    player_fire_key, player_bullet_speed, window=game_screen)
 
     GM.player = player
     player.draw(game_screen)
@@ -178,6 +178,10 @@ def main():
             player.shoot(player_bullets, IMG_ASSETS, game_screen)
         if key[pygame.K_e]:
             player.ChangeColor(game_screen)
+        if key[pygame.K_x]:
+            bomb = player.bomb()
+            if bomb:
+                inimigos.get_bombed()
 
         # Enemies
         DeathCount, PassingCount = inimigos.mover(game_screen, dt)
@@ -195,7 +199,7 @@ def main():
         inimigos.resize(game_screen)
 
     print(player.score)
-    #RIP_framerate(framerate)
+    # RIP_framerate(framerate)
 
     pygame.quit()
 

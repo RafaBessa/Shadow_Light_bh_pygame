@@ -72,7 +72,7 @@ class Player(Entity):
         self.score = 0
         self.killStreak = 0
         self.score_time = 0
-        
+        self.bombed = 0
         self.colorDelay = 0
 
     def ChangeColor(self, window):
@@ -87,7 +87,7 @@ class Player(Entity):
             self.color = ColorEnum.Light
             self.img_key = self.key_light
         self.resize(window)
-        
+
         for a in self.Assistents:
             a.ChangeColor(window)
 
@@ -108,7 +108,7 @@ class Player(Entity):
 
         for a in self.Assistents:
             a.selfDraw(window)
-            
+
 
     def selfDraw(self,window):
         super().draw(window)
@@ -159,11 +159,11 @@ class Player(Entity):
                 else:
                     # Hugging right
                     self.coordinates[0] = window.width - self.width
-                   
+
             else:
                 # Hugging left
                 self.coordinates[0] = 0
-               
+
 
             # Checking upper border
             if self.coordinates[1] + v > 0:
@@ -177,7 +177,7 @@ class Player(Entity):
                 else:
                     # Hugging lower border
                     self.coordinates[1] = self.healthbar.y - self.height
-                    
+
             else:
                 # Hugging upper border
                 self.coordinates[1] = 0
@@ -188,10 +188,10 @@ class Player(Entity):
                     self.Assistents[x].coordinates[0] = self.coordinates[0] + self.width + 30
                     self.Assistents[x].coordinates[1] = self.coordinates[1]
                 if x == 1:
-                    self.Assistents[x].coordinates[0] = self.coordinates[0] - self.width - 10 
+                    self.Assistents[x].coordinates[0] = self.coordinates[0] - self.width - 10
                     self.Assistents[x].coordinates[1] = self.coordinates[1]
-            
-                
+
+
 
     @property
     def hitbox(self):
@@ -222,7 +222,7 @@ class Player(Entity):
             for a in self.Assistents:
                 a.shoot(bullets, IMG_ASSETS, game_screen)
             # AudioCaller.playAudio("ow")
-        
+
 
     def scoreUpdate(self, DeathCount, PassingCount):
         # print(str(self.speed))
@@ -247,11 +247,11 @@ class Player(Entity):
                 self.speed *= 1.06
             #self.CreateAssistente()
             # print(str(self.speed))
-            
+
         upgradetype = math.floor(self.killStreak / _streakValue)
         if upgradetype >= len(self._ShootType):
             upgradetype = len(self._ShootType) - 1
-            
+
 
         self.shootStrategy = self._ShootType[upgradetype]
 
@@ -261,10 +261,17 @@ class Player(Entity):
         elif (len(self.Assistents) == 0):
             cord = [self.coordinates[0] + self.width + 30 ,self.coordinates[1]]
         else:
-            cord = [self.coordinates[0] - self.width - 10 ,self.coordinates[1]] 
-        
+            cord = [self.coordinates[0] - self.width - 10 ,self.coordinates[1]]
+
         self.Assistents.append(Player(cord,self._dim, self.speed,self._IMG_ASS, "red bullet", -20.0, isplayer=False,
                                       startcolor=self.color ))
         for a in self.Assistents:
             a.cooldown = 0.5
         self.resize(self._window)
+
+    def bomb(self):
+        if self.bombed+1 <= self.score/100:
+            self.bombed -= 1
+            return True
+        else:
+            return False

@@ -92,7 +92,7 @@ class GameMaster:
                     print(bonus)
                 elif (bonus == "cd"):
                     for a in self.player.Assistents:
-                        a.cooldowns *= 0.9
+                        a.cooldown *= 0.9
                     print(bonus)
                 elif (bonus == "bulletspeed"):
                     for a in self.player.Assistents:

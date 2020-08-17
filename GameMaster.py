@@ -96,7 +96,7 @@ class GameMaster:
                     print(bonus)
                 elif (bonus == "bulletspeed"):
                     for a in self.player.Assistents:
-                        a.bulletspeed *= 1.1
+                        a.bullet_speed *= 1.1
                     print(bonus)
 
         if self.ShootTypeProb["Basic"] > 0:

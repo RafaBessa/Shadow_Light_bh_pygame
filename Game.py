@@ -1,6 +1,11 @@
 # NECESSARY DISCLAIMERS AND ATTRIBUTIONS:
-# Space ships and bullets were made using BizmasterStudios' "Spaceship Creation Kit" available on itch.io
-# Available at https://bizmasterstudios.itch.io/spaceship-creation-kit at the time of writing (15/08/2020 - dd/mm/yyyy)
+# Space ships and bullets were made using BizmasterStudios' asset kit "Spaceship Creation Kit"
+# Assets available at https://bizmasterstudios.itch.io/spaceship-creation-kit at the time of
+# writing (17/08/2020 - dd/mm/yyyy)
+#
+# Explosions were made using "Will's Pixel Explosions" asset kit, by Will Tice from unTied Games
+# Assets available at https://untiedgames.itch.io/five-free-pixel-explosions at the time of
+# # writing (17/08/2020 - dd/mm/yyyy)
 
 import os
 import pygame  # ver 1.9.6
@@ -10,6 +15,7 @@ from Player import Player
 from Window import Window
 from InimigosController import Inimigos
 import GameMaster as gm
+from PlayerBomb import Bomb
 
 pygame.font.init()
 pygame.mixer.init()
@@ -66,7 +72,6 @@ SCALE_ASSETS = {"ship dark": .2,
                 "dark laser": .4,
                 }
 
-
 def RIP_framerate(framerate):
     s = 0
     for fps in framerate[1:-1]:
@@ -107,6 +112,9 @@ def main():
 
     GM.player = player
     player.draw(game_screen)
+    # Bomb
+    bomb = Bomb(2.)
+    bomb.resize(5)
 
     # Enemies
     inimigos = Inimigos()
@@ -127,6 +135,7 @@ def main():
         player_bullets.draw(game_screen)
         enemy_bullets.draw(game_screen)
         game_screen.drawRect()
+        bomb.draw(game_screen._screen)
         if lost:
             lost_label = lost_font.render("Game Over", 1, lost_font_rgb)
             game_screen._screen.blit(lost_label,
@@ -185,10 +194,9 @@ def main():
             player.shoot(player_bullets, IMG_ASSETS, game_screen)
         if key[pygame.K_e]:
             player.ChangeColor(game_screen)
-        if key[pygame.K_x]:
-            bomb = player.bomb()
-            if bomb:
-                inimigos.get_bombed()
+        if key[pygame.K_x] and player.bomb():
+            inimigos.get_bombed()
+            bomb.Explode()
 
         # Enemies
         DeathCount, PassingCount = inimigos.mover(game_screen, dt)
